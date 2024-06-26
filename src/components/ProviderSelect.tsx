@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { UseFormReturn, useFieldArray } from "react-hook-form"
 import { intToBin } from "../utils"
+import { IFormInput } from "../interface"
 
 const defaultProviders : { [key: string] : Array<{
     name: string
@@ -41,7 +42,7 @@ const defaultProviders : { [key: string] : Array<{
     ],
 }
 
-export function ProviderSelect({ form }: { form: UseFormReturn }) {
+export function ProviderSelect({ form }: { form: UseFormReturn<IFormInput> }) {
     const { fields: providers, append, remove } = useFieldArray({
         control: form.control,
         name: "providers",
