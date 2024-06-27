@@ -4,6 +4,8 @@ import { IFormInput } from './interface'
 
 import 'leaflet/dist/leaflet.css'
 import { ProviderSelect } from './components/ProviderSelect'
+import { HazardSelect } from './components/HazardSelect'
+import { SeveritySelect } from './components/SeveritySelect'
 
 function App() {
   const form = useForm<IFormInput>({
@@ -22,6 +24,8 @@ function App() {
       </select>
       <CountrySelect form={form} />
       <ProviderSelect form={form} />
+      <HazardSelect form={form} />
+      <SeveritySelect form={form} /> 
     </div>
   )
 }
