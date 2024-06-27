@@ -6,7 +6,7 @@ import 'leaflet/dist/leaflet.css'
 import { ProviderSelect } from './components/ProviderSelect'
 import { HazardSelect } from './components/HazardSelect'
 import { SeveritySelect } from './components/SeveritySelect'
-import { UTCSelect } from './components/WeekTimeSelect'
+import { UTCSelect } from './components/UTCSelect'
 
 function App() {
   const form = useForm<IFormInput>({
