@@ -254,11 +254,11 @@ const countries = [
     "Zambia"
 ]
 
-export function CountrySelect(props: { form: UseFormReturn<IFormInput> }) {
+export function CountrySelect({ form }: { form: UseFormReturn<IFormInput> }) {
     return (
-        <select {...props.form.register('country')}>
-            {countries.map((country) => (
-                <option key={country} value={intToBin(countries.indexOf(country), 9)}>
+        <select {...form.register('country')}>
+            {countries.map((country, i) => (
+                <option key={country} value={intToBin(i, 9)}>
                     {country}
                 </option>
             ))}

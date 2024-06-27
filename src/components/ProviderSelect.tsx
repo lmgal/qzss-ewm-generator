@@ -64,8 +64,8 @@ export function ProviderSelect({ form }: { form: UseFormReturn<IFormInput> }) {
     return (
         <div>
             <select {...form.register("providerId")}>
-                {watchProviders.map((provider, index) => (
-                    <option key={index} value={intToBin(index, 9)}>
+                {watchProviders.map((provider, i) => (
+                    <option key={i} value={intToBin(i, 9)}>
                         {provider.name}
                     </option>
                 ))}
@@ -77,12 +77,12 @@ export function ProviderSelect({ form }: { form: UseFormReturn<IFormInput> }) {
                     </option>
                 ))}
             </select>
-            {providers.map((provider, index) => (
+            {providers.map((provider, i) => (
                 <div key={provider.id}>
                     <input
-                        {...form.register(`providers.${index}.name`)}
+                        {...form.register(`providers.${i}.name`)}
                     />
-                    <button type="button" onClick={() => remove(index)}>
+                    <button type="button" onClick={() => remove(i)}>
                         Remove
                     </button>
                 </div>
