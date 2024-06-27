@@ -6,6 +6,7 @@ import 'leaflet/dist/leaflet.css'
 import { ProviderSelect } from './components/ProviderSelect'
 import { HazardSelect } from './components/HazardSelect'
 import { SeveritySelect } from './components/SeveritySelect'
+import { UTCSelect } from './components/WeekTimeSelect'
 
 function App() {
   const form = useForm<IFormInput>({
@@ -25,7 +26,12 @@ function App() {
       <CountrySelect form={form} />
       <ProviderSelect form={form} />
       <HazardSelect form={form} />
-      <SeveritySelect form={form} /> 
+      <SeveritySelect form={form} />
+      <select {...form.register('hazardWeek')}>
+        <option value='0'>Current</option>
+        <option value='1'>Next</option>
+      </select>
+      <UTCSelect form={form} />
     </div>
   )
 }
