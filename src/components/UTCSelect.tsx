@@ -35,11 +35,12 @@ export function UTCSelect({ form }: { form: UseFormReturn<IFormInput> }) {
                 <option value={6}>Sunday</option>
             </select>
             <select {...form.register('hazardHour')}>
-                {[...Array(12).keys()].map((hour) => (
-                    <option key={hour} value={hour}>
-                        {hour}
+                {[...Array(11).keys()].map((hour) => (
+                    <option key={hour + 1} value={hour + 1}>
+                        {hour + 1}
                     </option>
                 ))}
+                <option key={0} value={0}>12</option>
             </select>
             <select {...form.register('hazardMinute')}>
                 {[...Array(60).keys()].map((minute) => (
