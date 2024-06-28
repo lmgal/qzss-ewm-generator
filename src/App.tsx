@@ -37,6 +37,17 @@ function App() {
         <option value='10'>6 &le; Duration &lt; 12</option>
         <option value='11'>12 &le; Duration &lt; 24</option>
       </select>
+      <select {...form.register('libSelection')}>
+        <option value='0'>International Guidance Library</option>
+        <option value='1'>Country/Region Guidance Library</option>
+      </select>
+      <select {...form.register('libVersion')}>
+        { [...Array(8).keys()].map((version) => (
+          <option key={version} value={version}>
+            # {version + 1}
+          </option>
+        ))}
+      </select>
     </div>
   )
 }
