@@ -13,6 +13,7 @@ export interface IFormInput {
     hazardHour: string,
     hazardMinute: string,
     hazardIsAM: string,
+    hazardIs24HourClock: string,
     hazardUTCTime: string,
     hazardExpectedDuration: string,
     libSelection: string,
