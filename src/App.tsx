@@ -32,6 +32,11 @@ function App() {
         <option value='1'>Next</option>
       </select>
       <UTCSelect form={form} />
+      <select {...form.register('hazardExpectedDuration')}>
+        <option value='01'>Duration &lt; 6</option>
+        <option value='10'>6 &le; Duration &lt; 12</option>
+        <option value='11'>12 &le; Duration &lt; 24</option>
+      </select>
     </div>
   )
 }
