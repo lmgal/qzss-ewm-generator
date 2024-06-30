@@ -137,7 +137,7 @@ export function HazardSelect({ form }: { form: UseFormReturn<IFormInput> }) {
     return (
         <select {...form.register('hazardTypeCategory')}>
             { hazards.map((hazard, i) => (
-                <option key={hazard} value={intToBin(i, 7)}>
+                <option key={i} value={intToBin(i, 7)}>
                     {hazard}
                 </option>
             ))}

@@ -18,8 +18,15 @@ export interface IFormInput {
     hazardExpectedDuration: string,
     libSelection: string,
     libVersion: string,
-    listAGeneralAction: string,
-    listBMonitorAction: string,
+    libActions: Array<string>,
+    customLibrary: Array<{
+        bits: number,
+        description: string
+        instructs: Array<{
+            code: string,
+            detail: string
+        }>
+    }>,
     centerLat: string,
     cenerLong: string,
     semiMajorAxis: string,

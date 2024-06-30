@@ -254,6 +254,10 @@ const countries = [
     "Zambia"
 ]
 
+export function getCountryFromBin(country: string) {
+    return countries[parseInt(country, 2)]
+}
+
 export function CountrySelect({ form }: { form: UseFormReturn<IFormInput> }) {
     return (
         <select {...form.register('country')}>
