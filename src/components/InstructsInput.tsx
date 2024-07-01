@@ -15,22 +15,27 @@ export function InstructsInput({ form, i } : {
         watchBits ** 2 >= instructs.length
 
     return (
-        <div key={i}>
+        <div key={i} className="grid gap-3">
             {instructs.map((instruct, j) => (
-                <div key={instruct.id}>
+                <div key={instruct.id} className="flex gap-2">
                     <input
                         {...form.register(`customLibrary.${i}.instructs.${j}.code`)}
                     />
                     <input
                         {...form.register(`customLibrary.${i}.instructs.${j}.detail`)}
                     />
-                    <button type="button" onClick={() => remove(j)}>
+                    <button 
+                        type="button" 
+                        onClick={() => remove(j)}
+                        className="py-2 px-4 rounded border border-black"
+                    >
                         Remove
                     </button>
                 </div>
             ))}
             { canBitsHoldInstructs && <button
                 type="button"
+                className='py-2 px-4 rounded border border-black'
                 onClick={() => {
                     append({ code: "", detail: "" })
                 }}

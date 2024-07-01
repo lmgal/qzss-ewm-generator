@@ -1,7 +1,8 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { UseFormReturn, useFieldArray } from "react-hook-form"
 import { intToBin } from "../utils"
 import { IFormInput } from "../interface"
+import Modal from 'react-modal'
 
 const defaultProviders : { [key: string] : Array<{
     name: string
@@ -51,6 +52,7 @@ export function ProviderSelect({ form }: { form: UseFormReturn<IFormInput> }) {
     const watchProviders = form.watch("providers") as Array<{
         name: string
     }>
+    const [isModalOpen, setIsModalOpen] = useState(false)
 
     useEffect(() => {
         if (watchCountry) {
@@ -62,7 +64,7 @@ export function ProviderSelect({ form }: { form: UseFormReturn<IFormInput> }) {
     }, [watchCountry])
 
     return (
-        <div>
+        <div className="flex gap-1">
             <select {...form.register("providerId")}>
                 {watchProviders.map((provider, i) => (
                     <option key={i} value={intToBin(i, 9)}>
@@ -77,24 +79,55 @@ export function ProviderSelect({ form }: { form: UseFormReturn<IFormInput> }) {
                     </option>
                 ))}
             </select>
-            {providers.map((provider, i) => (
-                <div key={provider.id}>
-                    <input
-                        {...form.register(`providers.${i}.name`)}
-                    />
-                    <button type="button" onClick={() => remove(i)}>
-                        Remove
-                    </button>
-                </div>
-            ))}
-            <button
-                type="button"
-                onClick={() => {
-                    append({ name: "" })
+            <button 
+                className="py-2 px-4 rounded border border-black" 
+                onClick={() => setIsModalOpen(true)}
+            >
+                Edit
+            </button>
+            <Modal 
+                isOpen={isModalOpen}
+                onRequestClose={() => setIsModalOpen(false)}
+                style={{
+                    content: {
+                        width: '50%',
+                        margin: 'auto',
+                    }
                 }}
             >
-                Add Provider
-            </button>
+                <div className="grid gap-3">
+                    <div className='flex justify-between'>
+                        <h2 className='text-xl font-bold'>Providers</h2>
+                        <button onClick={() => setIsModalOpen(false)}>
+                            Close
+                        </button>
+                    </div>
+                    {providers.map((provider, i) => (
+                        <div key={provider.id}>
+                            <input
+                                className="w-5/6"
+                                {...form.register(`providers.${i}.name`)}
+                            />
+                            <button 
+                                type="button" 
+                                onClick={() => remove(i)}
+                                className="py-2 px-4 rounded border border-black"
+                            >
+                                Remove
+                            </button>
+                        </div>
+                    ))}
+                    <button
+                        type="button"
+                        className="py-2 px-4 rounded border border-black"
+                        onClick={() => {
+                            append({ name: "" })
+                        }}
+                    >
+                        Add Provider
+                    </button>
+                </div>
+            </Modal>
         </div>
     )
 }

@@ -441,18 +441,7 @@ export const GuidanceSelect = ({ form }: { form: UseFormReturn<IFormInput> }) =>
     }>) => lists.reduce((sum, list) => sum + list.bits, 0)
 
     return (
-        <div className='flex'>
-            <select {...form.register('libSelection')}>
-                <option value='0'>International Guidance Library</option>
-                <option value='1'>Country/Region Guidance Library</option>
-            </select>
-            <select {...form.register('libVersion')}>
-                {[...Array(8).keys()].map((version) => (
-                    <option key={version} value={version}>
-                        #{version + 1}
-                    </option>
-                ))}
-            </select>
+        <div className='flex gap-1'>
             {
                 watchLibrary.map((list, i) => (
                     <select key={i} {...form.register(`libActions.${i}`)}>
@@ -466,7 +455,6 @@ export const GuidanceSelect = ({ form }: { form: UseFormReturn<IFormInput> }) =>
                     </select>
                 ))
             }
-            <button onClick={() => setLibModalIsOpen(true)}>?</button>
             <Modal
                 isOpen={libModalIsOpen}
                 onRequestClose={() => setLibModalIsOpen(false)}
@@ -494,51 +482,59 @@ export const GuidanceSelect = ({ form }: { form: UseFormReturn<IFormInput> }) =>
                             </ul>
                         </div>
                     )) :
-                    <div>
-                        <div className='flex'></div>
-                        <div className='flex-col gap-5'>
-                        {
-                            lists.map((list, i) => (
-                                <div key={list.id}>
-                                    <div className='flex'>
-                                        <input
-                                            {...form.register(`customLibrary.${i}.description`)}
-                                            placeholder='Description'
-                                        />
-                                        <input
-                                            {...form.register(`customLibrary.${i}.bits`, {
-                                                valueAsNumber: true,
-                                                validate: (_, formValues) => {
-                                                    return bitSum(formValues.customLibrary) <= 10 || 
-                                                    'Total bits must be less than or equal to 10'
-                                                }
-                                            })}
-                                            placeholder='Bits'
-                                            type='number'
-                                            min={1}
-                                            max={10}
-                                        />
-                                        <button type='button' onClick={() => removeList(i)}>
-                                            Remove
-                                        </button>
-                                    </div>
-                                    <InstructsInput form={form} i={i} />
+                    <div className='grid gap-5'>
+                    {
+                        lists.map((list, i) => (
+                            <div key={list.id} className='grid gap-2'>
+                                <div className='flex gap-2'>
+                                    <input
+                                        {...form.register(`customLibrary.${i}.description`)}
+                                        placeholder='Description'
+                                    />
+                                    <input
+                                        {...form.register(`customLibrary.${i}.bits`, {
+                                            valueAsNumber: true,
+                                            validate: (_, formValues) => {
+                                                return bitSum(formValues.customLibrary) <= 10 || 
+                                                'Total bits must be less than or equal to 10'
+                                            }
+                                        })}
+                                        placeholder='Bits'
+                                        type='number'
+                                        min={1}
+                                        max={10}
+                                    />
+                                    <button 
+                                        type='button' 
+                                        onClick={() => removeList(i)}
+                                        className='py-2 px-4 rounded border border-black'
+                                    >
+                                        Remove
+                                    </button>
                                 </div>
-                            ))
-                        }
-                        { bitSum(watchLibrary) + 1 <= 10 && 
-                        <button type='button' onClick={() => appendList({ 
-                            bits: 1, 
-                            description: '', 
-                            instructs: []
-                         })}>
-                            Add Instruction List
-                        </button> }
-                        </div>
+                                <InstructsInput form={form} i={i} />
+                            </div>
+                        ))
+                    }
+                    { bitSum(watchLibrary) + 1 <= 10 && 
+                    <button type='button' onClick={() => appendList({ 
+                        bits: 1, 
+                        description: '', 
+                        instructs: []
+                        })}
+                        className='py-2 px-4 rounded border border-black'
+                    >
+                        Add Instruction List
+                    </button> }
                     </div>
                 }
                 </div>
             </Modal>
+            <button 
+                className='py-2 px-4 rounded border border-black' 
+                onClick={() => setLibModalIsOpen(true)}>
+                Show Details
+            </button>
         </div>
     )
 }
