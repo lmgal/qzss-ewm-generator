@@ -434,7 +434,6 @@ export const GuidanceSelect = ({ form }: { form: UseFormReturn<IFormInput> }) =>
     })
 
     useEffect(() => {
-        console.log(guidanceLibraries['International'])
         if (watchLibSelection === '0') {
             form.setValue('customLibrary', guidanceLibraries['International'])
         } else {

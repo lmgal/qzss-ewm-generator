@@ -27,12 +27,21 @@ export interface IFormInput {
             detail: string
         }>
     }>,
-    centerLat: string,
-    cenerLong: string,
-    semiMajorAxis: string,
-    semiMinorAxis: string,
-    azimuthAngle: string,
+    centerLat: number,
+    centerLong: number,
+    semiMajorAxis: number,
+    semiMinorAxis: number,
+    azimuthAngle: number,
+    centerLatIdx: number,
+    centerLongIdx: number,
+    semiMajorAxisIdx: number,
+    semiMinorAxisIdx: number,
+    azimuthAngleIdx: number,
     specificSettings: string,
+    centerLatInt: number,
+    centerLongInt: number,
+    semiMajorAxisX: number,
+    semiMinorAxisX: number
 }
 
 

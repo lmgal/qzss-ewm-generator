@@ -9,6 +9,7 @@ import { HazardSelect } from './components/HazardSelect'
 import { SeveritySelect } from './components/SeveritySelect'
 import { UTCSelect } from './components/UTCSelect'
 import { GuidanceSelect, guidanceLibraries } from './components/GuidanceSelect'
+import { EllipseSelect } from './components/EllipseSelect'
 
 Modal.setAppElement('#root')
 
@@ -16,13 +17,22 @@ function App() {
   const form = useForm<IFormInput>({
     defaultValues: {
       providers: [{ name: ''}],
-      customLibrary: guidanceLibraries['International']
+      customLibrary: guidanceLibraries['International'],
+      centerLatIdx: 0,
+      centerLongIdx: 0,
+      centerLatInt: 180 / ((2 ** 16)-1),
+      centerLongInt: 360 / ((2 ** 17)-1),
+      semiMajorAxisIdx: 0,
+      semiMinorAxisIdx: 0,
+      semiMajorAxisX: 0,
+      semiMinorAxisX: 0,
+      azimuthAngleIdx: 0
     }
   })
 
   return (
     <div className={`w-full h-full flex justify-center bg-gradient-to-br from-purple-700 to-amber-700`}>
-      <div className='grid grid-cols-[max-content_1fr] gap-1 bg-white p-8 rounded-lg my-16'>
+      <div className='grid grid-cols-[max-content_1fr] gap-3 bg-white p-8 rounded-lg my-16 items-center'>
         <h1 className='text-2xl font-bold col-span-2'>QZSS EWS Message Generator</h1>
         <h2 className='text-lg font-bold'>Type</h2>
         <select {...form.register('type')}>
@@ -58,6 +68,8 @@ function App() {
         </select>
         <h2 className='text-lg'>Instructions</h2>
         <GuidanceSelect form={form} />
+        <h2 className='text-lg font-bold col-span-2'>Ellipse Definition</h2>
+        <EllipseSelect form={form} />
       </div>
     </div>
   )
