@@ -52,7 +52,7 @@ export const guidanceLibraries : { [key: string] : Array<{
                 },
                 {
                     code: 'IC-A-002',
-                    detail: `You are in the danger zone, leave the area immediately. 
+                    detail: `You are in the danger zone, leave the area immediately.
                     Listen to radio or media for directions and information.`
                 },
                 {
@@ -410,6 +410,17 @@ export const guidanceLibraries : { [key: string] : Array<{
         }
     ]
 }
+// Remove extra whitespace from using template literals
+for (const country in guidanceLibraries) {
+    for (const list of guidanceLibraries[country]) {
+        for (const instruct of list.instructs) {
+            instruct.detail = instruct.detail
+                .split('\n')
+                .map(line => line.trim())
+                .join('\n')
+        }
+    }
+}
         
 export const GuidanceSelect = ({ form }: { form: UseFormReturn<IFormInput> }) => {
     const [watchLibSelection, watchCountry] = form.watch(['libSelection','country'])
@@ -423,6 +434,7 @@ export const GuidanceSelect = ({ form }: { form: UseFormReturn<IFormInput> }) =>
     })
 
     useEffect(() => {
+        console.log(guidanceLibraries['International'])
         if (watchLibSelection === '0') {
             form.setValue('customLibrary', guidanceLibraries['International'])
         } else {
@@ -482,7 +494,7 @@ export const GuidanceSelect = ({ form }: { form: UseFormReturn<IFormInput> }) =>
                             </ul>
                         </div>
                     )) :
-                    <div className='grid gap-5'>
+                    <div className='grid gap-10 w-9/12'>
                     {
                         lists.map((list, i) => (
                             <div key={list.id} className='grid gap-2'>

@@ -65,7 +65,7 @@ export function ProviderSelect({ form }: { form: UseFormReturn<IFormInput> }) {
 
     return (
         <div className="flex gap-1">
-            <select {...form.register("providerId")}>
+            <select {...form.register("providerId")} className="w-full">
                 {watchProviders.map((provider, i) => (
                     <option key={i} value={intToBin(i, 9)}>
                         {provider.name}
@@ -103,9 +103,9 @@ export function ProviderSelect({ form }: { form: UseFormReturn<IFormInput> }) {
                         </button>
                     </div>
                     {providers.map((provider, i) => (
-                        <div key={provider.id}>
+                        <div key={provider.id} className="w-full flex gap-1">
                             <input
-                                className="w-5/6"
+                                className="w-full"
                                 {...form.register(`providers.${i}.name`)}
                             />
                             <button 

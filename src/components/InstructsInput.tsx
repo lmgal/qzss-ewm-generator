@@ -19,9 +19,12 @@ export function InstructsInput({ form, i } : {
             {instructs.map((instruct, j) => (
                 <div key={instruct.id} className="flex gap-2">
                     <input
+                        placeholder="Code"
                         {...form.register(`customLibrary.${i}.instructs.${j}.code`)}
                     />
-                    <input
+                    <textarea
+                        className={`min-w-full`}
+                        placeholder="Detail"
                         {...form.register(`customLibrary.${i}.instructs.${j}.detail`)}
                     />
                     <button 
