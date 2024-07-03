@@ -4,6 +4,7 @@ import { UseFormReturn } from "react-hook-form"
 import { IFormInput } from "../interface"
 import { useEffect, useRef } from "react"
 import { getCountryFromBin } from "./CountrySelect"
+import { GeoSearch } from "./GeoSearch"
 
 type Map = ReturnType<typeof useMap>
 
@@ -348,18 +349,77 @@ export function EllipseSelect({ form }: { form: UseFormReturn<IFormInput> }) {
         mapRef.current?.setView([lat, long], 13)
     }, [countryBin])
 
+    useEffect(() => {
+        if (mapRef.current === null) return
+        if (form === null) return
+
+        const map = mapRef.current!
+        map.on('geosearch/showlocation', (e) => {
+            // @ts-ignore
+            const lat = e.location.y as number
+            // @ts-ignore
+            const lng = e.location.x as number
+            const centerLatIdx = Math.round((lat + 90) / (180 / ((2 ** 16)-1)))
+            const centerLongIdx = Math.round((lng + 180) / (360 / ((2 ** 17)-1)))
+            form.setValue('centerLatIdx', centerLatIdx)
+            form.setValue('centerLongIdx', centerLongIdx)
+
+            const latInt = form.getValues('centerLatInt')
+            const longInt = form.getValues('centerLongInt')
+            const centerLat = centerLatIdx * latInt - 90
+            const centerLong = centerLongIdx * longInt - 180
+
+            form.setValue('centerLat', centerLat)
+            form.setValue('centerLong', centerLong)
+
+            // @ts-ignore Bounds is a tuple of tuples of degrees
+            const bounds = e.location.bounds as [[number, number], [number, number]]
+            const semiMajorAxisDeg = Math.abs(bounds[1][0] - bounds[0][0]) / 2
+            const semiMinorAxisDeg = Math.abs(bounds[1][1] - bounds[0][1]) / 2
+
+            // Convert degrees to meters
+            const semiMajorAxisM = semiMajorAxisDeg * 111319.9
+            const semiMinorAxisM = semiMinorAxisDeg * 111319.9
+
+            // Generate the radii array based on current x values
+            const majorRadii = Array.from({ length: 32 }).map((_, i) => {
+                if (i === 0) return radii[0] - semiMajorAxisX * radii[0]
+                return radii[i] - semiMajorAxisX * (radii[i] - radii[i - 1])
+            })
+            const minorRadii = Array.from({ length: 32 }).map((_, i) => {
+                if (i === 0) return radii[0] - semiMinorAxisX * radii[0]
+                return radii[i] - semiMinorAxisX * (radii[i] - radii[i - 1])
+            })
+
+            // Get index of the nearest valid value
+            const semiMajorAxisIdx = majorRadii.findIndex(r => r > semiMajorAxisM)
+            const semiMinorAxisIdx = minorRadii.findIndex(r => r > semiMinorAxisM)
+
+            form.setValue('semiMajorAxisIdx', semiMajorAxisIdx)
+            form.setValue('semiMinorAxisIdx', semiMinorAxisIdx)
+            form.setValue('semiMajorAxis', majorRadii[semiMajorAxisIdx])
+            form.setValue('semiMinorAxis', minorRadii[semiMinorAxisIdx])
+            form.setValue('azimuthAngleIdx', 0)
+            form.setValue('azimuthAngle', -90)
+        })
+    }, [mapRef?.current, form])
+
     return (
         <div className="grid gap-1 col-span-2">
+            <div className="grid grid-cols-[max-content_1fr] items-center gap-1">
+                <label>Search: </label>
+            </div>
             { centerLat !== undefined && !Number.isNaN(centerLat) &&
              centerLong !== undefined && !Number.isNaN(centerLong) &&
             <MapContainer
-                center={[0, 0]}
+                center={countryCapitalCoords['Afghanistan']}
                 zoom={13}
                 scrollWheelZoom={false}
                 className="w-full h-96"
                 maxBounds={[[90, 180], [-90, -180]]}
                 ref={mapRef}
             >
+                <GeoSearch />
                 <TileLayer 
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -447,7 +507,7 @@ export function EllipseSelect({ form }: { form: UseFormReturn<IFormInput> }) {
                         valueAsNumber: true,
                     })}
                 />
-                <label>Semi-Major Axis: </label>
+                <label>Semi-Major Axis (m): </label>
                 <input 
                     type='number'
                     min={minRadius}
@@ -481,7 +541,7 @@ export function EllipseSelect({ form }: { form: UseFormReturn<IFormInput> }) {
                         valueAsNumber: true,
                     })}
                 />
-                <label>Semi-Minor Axis: </label>
+                <label>Semi-Minor Axis (m): </label>
                 <input 
                     type='number'
                     min={minRadius}

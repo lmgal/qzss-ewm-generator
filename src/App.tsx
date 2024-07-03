@@ -4,6 +4,7 @@ import { IFormInput } from './interface'
 import Modal from 'react-modal'
 
 import 'leaflet/dist/leaflet.css'
+import 'leaflet-geosearch/dist/geosearch.css'
 import { ProviderSelect } from './components/ProviderSelect'
 import { HazardSelect } from './components/HazardSelect'
 import { SeveritySelect } from './components/SeveritySelect'
