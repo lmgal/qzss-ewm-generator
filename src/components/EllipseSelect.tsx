@@ -391,7 +391,6 @@ export function EllipseSelect({ form }: { form: UseFormReturn<IFormInput> }) {
                     min={-90}
                     max={90}
                     step={centerLatInt}
-                    className="w-full"
                     {...form.register("centerLat", {
                         valueAsNumber: true,
                         onBlur: (e) => {
@@ -408,24 +407,21 @@ export function EllipseSelect({ form }: { form: UseFormReturn<IFormInput> }) {
                             e.currentTarget.blur()
                     }}
                 />
-            </div>
-            <input 
-                type='range'
-                min={0}
-                max={2 ** 16 - 1}
-                className="w-full"
-                {...form.register("centerLatIdx", {
-                    valueAsNumber: true
-                })} 
-            />
-            <div className="grid grid-cols-[max-content_1fr] items-center gap-1">
+                <input 
+                    type='range'
+                    min={0}
+                    max={2 ** 16 - 1}
+                    className="col-span-2"
+                    {...form.register("centerLatIdx", {
+                        valueAsNumber: true
+                    })} 
+                />
                 <label>Center Longitude: </label>
                 <input 
                     type='number'
                     min={-180}
                     max={180}
                     step={centerLongInt}
-                    className="w-full"
                     {...form.register("centerLong", {
                         valueAsNumber: true,
                         onBlur: (e) => {
@@ -442,24 +438,21 @@ export function EllipseSelect({ form }: { form: UseFormReturn<IFormInput> }) {
                             e.currentTarget.blur()
                     }}
                 />
-            </div>
-            <input 
-                type='range'
-                min={0}
-                max={2 ** 17 - 1}
-                className="w-full"
-                {...form.register("centerLongIdx", {
-                    valueAsNumber: true,
-                })}
-            />
-            <div className="grid grid-cols-[max-content_1fr] items-center gap-1">
+                <input 
+                    type='range'
+                    min={0}
+                    max={2 ** 17 - 1}
+                    className="col-span-2"
+                    {...form.register("centerLongIdx", {
+                        valueAsNumber: true,
+                    })}
+                />
                 <label>Semi-Major Axis: </label>
                 <input 
                     type='number'
                     min={minRadius}
                     max={maxRadius}
                     step={semiMajorAxisX}
-                    className="w-full"
                     {...form.register("semiMajorAxis", {
                         valueAsNumber: true,
                         onBlur: (e) => {
@@ -479,24 +472,21 @@ export function EllipseSelect({ form }: { form: UseFormReturn<IFormInput> }) {
                             e.currentTarget.blur()
                     }}
                 />
-            </div>
-            <input 
-                type='range'
-                min={0}
-                max={2 ** 5 - 1}
-                className="w-full"
-                {...form.register("semiMajorAxisIdx", {
-                    valueAsNumber: true,
-                })}
-            />
-            <div className="grid grid-cols-[max-content_1fr] items-center gap-1">
+                <input 
+                    type='range'
+                    min={0}
+                    max={2 ** 5 - 1}
+                    className="col-span-2"
+                    {...form.register("semiMajorAxisIdx", {
+                        valueAsNumber: true,
+                    })}
+                />
                 <label>Semi-Minor Axis: </label>
                 <input 
                     type='number'
                     min={minRadius}
                     max={maxRadius}
                     step={semiMinorAxisX}
-                    className="w-full"
                     {...form.register("semiMinorAxis", {
                         valueAsNumber: true,
                         onBlur: (e) => {
@@ -516,24 +506,21 @@ export function EllipseSelect({ form }: { form: UseFormReturn<IFormInput> }) {
                             e.currentTarget.blur()
                     }}
                 />
-            </div>
-            <input 
-                type='range'
-                min={0}
-                max={2 ** 5 - 1}
-                className="w-full"
-                {...form.register("semiMinorAxisIdx", {
-                    valueAsNumber: true
-                })}
-            />
-            <div className="grid grid-cols-[max-content_1fr] items-center gap-1">
+                <input 
+                    type='range'
+                    min={0}
+                    max={2 ** 5 - 1}
+                    className="col-span-2"
+                    {...form.register("semiMinorAxisIdx", {
+                        valueAsNumber: true
+                    })}
+                />
                 <label>Azimuth Angle: </label>
                 <input 
                     type='number'
                     min={-90}
                     max={90}
                     step={2.8125}
-                    className="w-full"
                     {...form.register("azimuthAngle", {
                         valueAsNumber: true,
                         onBlur: (e) => {
@@ -549,16 +536,16 @@ export function EllipseSelect({ form }: { form: UseFormReturn<IFormInput> }) {
                             e.currentTarget.blur()
                     }}
                 />
+                <input 
+                    type='range'
+                    min={0}
+                    max={2 ** 6 - 1}
+                    className="col-span-2"
+                    {...form.register("azimuthAngleIdx", {
+                        valueAsNumber: true,
+                    })}
+                />
             </div>
-            <input 
-                type='range'
-                min={0}
-                max={2 ** 6 - 1}
-                className="w-full"
-                {...form.register("azimuthAngleIdx", {
-                    valueAsNumber: true,
-                })}
-            />
         </div>
     )
 }
