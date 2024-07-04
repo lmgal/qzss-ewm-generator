@@ -340,11 +340,9 @@ export function EllipseSelect({ form }: { form: UseFormReturn<IFormInput> }) {
         // Change current value to the nearest valid value
         const idxLat = Math.round((lat + 90) / centerLatInt)
         form.setValue('centerLatIdx', idxLat)
-        form.setValue('centerLat', centerLatInt * idxLat - 90)
 
         const idxLong = Math.round((long + 180) / centerLongInt)
         form.setValue('centerLongIdx', idxLong)
-        form.setValue('centerLong', centerLongInt * idxLong - 180)
 
         mapRef.current?.setView([lat, long], 13)
     }, [countryBin])
@@ -363,14 +361,6 @@ export function EllipseSelect({ form }: { form: UseFormReturn<IFormInput> }) {
             const centerLongIdx = Math.round((lng + 180) / (360 / ((2 ** 17)-1)))
             form.setValue('centerLatIdx', centerLatIdx)
             form.setValue('centerLongIdx', centerLongIdx)
-
-            const latInt = form.getValues('centerLatInt')
-            const longInt = form.getValues('centerLongInt')
-            const centerLat = centerLatIdx * latInt - 90
-            const centerLong = centerLongIdx * longInt - 180
-
-            form.setValue('centerLat', centerLat)
-            form.setValue('centerLong', centerLong)
 
             // @ts-ignore Bounds is a tuple of tuples of degrees
             const bounds = e.location.bounds as [[number, number], [number, number]]
@@ -397,10 +387,7 @@ export function EllipseSelect({ form }: { form: UseFormReturn<IFormInput> }) {
 
             form.setValue('semiMajorAxisIdx', semiMajorAxisIdx)
             form.setValue('semiMinorAxisIdx', semiMinorAxisIdx)
-            form.setValue('semiMajorAxis', majorRadii[semiMajorAxisIdx])
-            form.setValue('semiMinorAxis', minorRadii[semiMinorAxisIdx])
             form.setValue('azimuthAngleIdx', 0)
-            form.setValue('azimuthAngle', -90)
         })
     }, [mapRef?.current, form])
 
@@ -458,8 +445,8 @@ export function EllipseSelect({ form }: { form: UseFormReturn<IFormInput> }) {
                             const value = e.target.valueAsNumber
                             const idx = Math.round((value + 90) / centerLatInt)
                             form.setValue('centerLatIdx', idx)
-                            form.setValue('centerLat', centerLatInt * idx - 90)
-                            mapRef.current?.setView([centerLat, centerLong])
+                            const newCenterLat = centerLatInt * idx - 90
+                            mapRef.current?.setView([newCenterLat, centerLong])
                         }
                     })}
                     onKeyDown={e => {
@@ -489,8 +476,8 @@ export function EllipseSelect({ form }: { form: UseFormReturn<IFormInput> }) {
                             const value = e.target.valueAsNumber
                             const idx = Math.round((value + 180) / centerLongInt)
                             form.setValue('centerLongIdx', idx)
-                            form.setValue('centerLong', centerLongInt * idx - 180)
-                            mapRef.current?.setView([centerLat, centerLong], 13)
+                            const newCenterLong = centerLongInt * idx - 180
+                            mapRef.current?.setView([centerLat, newCenterLong], 13)
                         }
                     })}
                     onKeyDown={e => {
@@ -518,12 +505,11 @@ export function EllipseSelect({ form }: { form: UseFormReturn<IFormInput> }) {
                         onBlur: (e) => {
                             // Change current value to the nearest valid value
                             const value = e.target.valueAsNumber
-                            const idx = radii.findIndex(r => r > value)
-                            const x = (value - radii[idx - 1]) / (radii[idx] - radii[idx - 1])
-                            form.setValue('semiMajorAxis', 
-                                idx === 0 ? radii[0] - x * radii[0] : 
-                                radii[idx] - x * (radii[idx] - radii[idx - 1])
-                            )
+                            const majorRadii = Array.from({ length: 32 }).map((_, i) => {
+                                if (i === 0) return radii[0] - semiMajorAxisX * radii[0]
+                                return radii[i] - semiMajorAxisX * (radii[i] - radii[i - 1])
+                            })
+                            const idx = majorRadii.findIndex(r => r > value)
                             form.setValue('semiMajorAxisIdx', idx)
                         }
                     })}
@@ -552,12 +538,11 @@ export function EllipseSelect({ form }: { form: UseFormReturn<IFormInput> }) {
                         onBlur: (e) => {
                             // Change current value to the nearest valid value
                             const value = e.target.valueAsNumber
-                            const idx = radii.findIndex(r => r > value)
-                            const x = (value - radii[idx - 1]) / (radii[idx] - radii[idx - 1])
-                            form.setValue('semiMinorAxis', 
-                                idx === 0 ? radii[0] - x * radii[0] : 
-                                radii[idx] - x * (radii[idx] - radii[idx - 1])
-                            )
+                            const minorRadii = Array.from({ length: 32 }).map((_, i) => {
+                                if (i === 0) return radii[0] - semiMinorAxisX * radii[0]
+                                return radii[i] - semiMinorAxisX * (radii[i] - radii[i - 1])
+                            })
+                            const idx = minorRadii.findIndex(r => r > value)
                             form.setValue('semiMinorAxisIdx', idx)
                         }
                     })}
@@ -587,7 +572,6 @@ export function EllipseSelect({ form }: { form: UseFormReturn<IFormInput> }) {
                             // Change current value to the nearest valid value
                             const value = e.target.valueAsNumber
                             const idx = Math.round((value + 90) / 2.8125)
-                            form.setValue('azimuthAngle', 2.8125 * idx - 90)
                             form.setValue('azimuthAngleIdx', idx)
                         }
                     })}
