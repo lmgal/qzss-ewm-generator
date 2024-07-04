@@ -396,8 +396,6 @@ export function EllipseSelect({ form }: { form: UseFormReturn<IFormInput> }) {
             <div className="grid grid-cols-[max-content_1fr] items-center gap-1">
                 <label>Search: </label>
             </div>
-            { centerLat !== undefined && !Number.isNaN(centerLat) &&
-             centerLong !== undefined && !Number.isNaN(centerLong) &&
             <MapContainer
                 center={countryCapitalCoords['Afghanistan']}
                 zoom={13}
@@ -430,7 +428,7 @@ export function EllipseSelect({ form }: { form: UseFormReturn<IFormInput> }) {
                         weight: 2,
                     }}
                 />}
-            </MapContainer>}
+            </MapContainer>
             <div className="grid grid-cols-[max-content_1fr] items-center gap-1">
                 <label>Center Latitude: </label>
                 <input 
