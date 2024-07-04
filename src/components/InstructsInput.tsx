@@ -30,7 +30,7 @@ export function InstructsInput({ form, i } : {
                     <button 
                         type="button" 
                         onClick={() => remove(j)}
-                        className="py-2 px-4 rounded border border-black"
+                        className="py-2 px-4 rounded border border-gray-500"
                     >
                         Remove
                     </button>
@@ -38,7 +38,7 @@ export function InstructsInput({ form, i } : {
             ))}
             { canBitsHoldInstructs && <button
                 type="button"
-                className='py-2 px-4 rounded border border-black'
+                className='py-2 px-4 rounded border border-gray-500'
                 onClick={() => {
                     append({ code: "", detail: "" })
                 }}

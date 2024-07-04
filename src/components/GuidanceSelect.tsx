@@ -518,7 +518,7 @@ export const GuidanceSelect = ({ form }: { form: UseFormReturn<IFormInput> }) =>
                                     <button 
                                         type='button' 
                                         onClick={() => removeList(i)}
-                                        className='py-2 px-4 rounded border border-black'
+                                        className='py-2 px-4 rounded border border-gray-500'
                                     >
                                         Remove
                                     </button>
@@ -533,7 +533,7 @@ export const GuidanceSelect = ({ form }: { form: UseFormReturn<IFormInput> }) =>
                         description: '', 
                         instructs: []
                         })}
-                        className='py-2 px-4 rounded border border-black'
+                        className='py-2 px-4 rounded border border-gray-500'
                     >
                         Add Instruction List
                     </button> }
@@ -542,7 +542,7 @@ export const GuidanceSelect = ({ form }: { form: UseFormReturn<IFormInput> }) =>
                 </div>
             </Modal>
             <button 
-                className='py-2 px-4 rounded border border-black' 
+                className='py-2 px-4 rounded border border-gray-500' 
                 onClick={() => setLibModalIsOpen(true)}>
                 Show Details
             </button>

@@ -80,7 +80,7 @@ export function ProviderSelect({ form }: { form: UseFormReturn<IFormInput> }) {
                 ))}
             </select>
             <button 
-                className="py-2 px-4 rounded border border-black" 
+                className="py-2 px-4 rounded border border-gray-500" 
                 onClick={() => setIsModalOpen(true)}
             >
                 Edit
@@ -111,7 +111,7 @@ export function ProviderSelect({ form }: { form: UseFormReturn<IFormInput> }) {
                             <button 
                                 type="button" 
                                 onClick={() => remove(i)}
-                                className="py-2 px-4 rounded border border-black"
+                                className="py-2 px-4 rounded border border-gray-500"
                             >
                                 Remove
                             </button>
@@ -119,7 +119,7 @@ export function ProviderSelect({ form }: { form: UseFormReturn<IFormInput> }) {
                     ))}
                     <button
                         type="button"
-                        className="py-2 px-4 rounded border border-black"
+                        className="py-2 px-4 rounded border border-gray-500"
                         onClick={() => {
                             append({ name: "" })
                         }}

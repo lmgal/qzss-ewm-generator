@@ -452,15 +452,35 @@ export function EllipseSelect({ form }: { form: UseFormReturn<IFormInput> }) {
                             e.currentTarget.blur()
                     }}
                 />
-                <input 
-                    type='range'
-                    min={0}
-                    max={2 ** 16 - 1}
-                    className="col-span-2"
-                    {...form.register("centerLatIdx", {
-                        valueAsNumber: true
-                    })} 
-                />
+                <div className="col-span-2 flex gap-1">
+                    <button
+                        className="py-2 px-4 rounded border border-gray-500 disabled:opacity-50"
+                        disabled={centerLatIdx === 0}
+                        onClick={() => {
+                            form.setValue('centerLatIdx', centerLatIdx - 1)
+                        }}
+                    >
+                        -
+                    </button>
+                    <input 
+                        type='range'
+                        className="w-full"
+                        min={0}
+                        max={2 ** 16 - 1}
+                        {...form.register("centerLatIdx", {
+                            valueAsNumber: true
+                        })} 
+                    />
+                    <button
+                        className="py-2 px-4 rounded border border-gray-500 disabled:opacity-50"
+                        disabled={centerLatIdx === 2 ** 16 - 1}
+                        onClick={() => {
+                            form.setValue('centerLatIdx', centerLatIdx + 1)
+                        }}
+                    >
+                        +
+                    </button>
+                </div>
                 <label>Center Longitude: </label>
                 <input 
                     type='number'
@@ -483,15 +503,35 @@ export function EllipseSelect({ form }: { form: UseFormReturn<IFormInput> }) {
                             e.currentTarget.blur()
                     }}
                 />
-                <input 
-                    type='range'
-                    min={0}
-                    max={2 ** 17 - 1}
-                    className="col-span-2"
-                    {...form.register("centerLongIdx", {
-                        valueAsNumber: true,
-                    })}
-                />
+                <div className="col-span-2 flex gap-1">
+                    <button
+                        className="py-2 px-4 rounded border border-gray-500 disabled:opacity-50"
+                        disabled={centerLongIdx === 0}
+                        onClick={() => {
+                            form.setValue('centerLongIdx', centerLongIdx - 1)
+                        }}
+                    >
+                        -
+                    </button>
+                    <input 
+                        type='range'
+                        className="w-full"
+                        min={0}
+                        max={2 ** 17 - 1}
+                        {...form.register("centerLongIdx", {
+                            valueAsNumber: true
+                        })} 
+                    />
+                    <button
+                        className="py-2 px-4 rounded border border-gray-500 disabled:opacity-50"
+                        disabled={centerLongIdx === 2 ** 17 - 1}
+                        onClick={() => {
+                            form.setValue('centerLongIdx', centerLongIdx + 1)
+                        }}
+                    >
+                        +
+                    </button>
+                </div>
                 <label>Semi-Major Axis (m): </label>
                 <input 
                     type='number'
