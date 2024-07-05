@@ -2,7 +2,7 @@ import { MapContainer, TileLayer, useMap } from "react-leaflet"
 import Ellipse from "./Ellipse"
 import { UseFormReturn } from "react-hook-form"
 import { IFormInput } from "../interface"
-import { useEffect, useRef } from "react"
+import { useEffect, useMemo, useRef } from "react"
 import { getCountryFromBin } from "./CountrySelect"
 import { GeoSearch } from "./GeoSearch"
 
@@ -15,6 +15,8 @@ const radii = Array.from({ length: 32 }).map((_, i) => {
         i * (Math.log10(maxRadius) - Math.log10(minRadius)) / 31
     return 10 ** exp
 })
+const centerLatInt = 180 / ((2 ** 16) - 1)
+const centerLongInt = 360 / ((2 ** 17) - 1)
 
 const countryCapitalCoords: { [key: string]: [number, number] } = {
     "Afghanistan": [34.53, 69.17],
@@ -274,59 +276,69 @@ export function EllipseSelect({ form }: { form: UseFormReturn<IFormInput> }) {
         countryBin,
         centerLat,
         centerLong,
-        semiMajorAxis,
-        semiMinorAxis,
         azimuthAngle,
         centerLatIdx, 
         centerLongIdx, 
         semiMajorAxisIdx,
         semiMinorAxisIdx,
         azimuthAngleIdx,
-        centerLatInt,
-        centerLongInt,
         semiMajorAxisX,
-        semiMinorAxisX
+        semiMinorAxisX,
+        refinedCenterLatIdx,
+        refinedCenterLongIdx,
     ] = form.watch([
         "country",
         "centerLat",
         "centerLong",
-        "semiMajorAxis",
-        "semiMinorAxis",
         "azimuthAngle",
         "centerLatIdx",
         "centerLongIdx",
         "semiMajorAxisIdx",
         "semiMinorAxisIdx",
         "azimuthAngleIdx",
-        "centerLatInt",
-        "centerLongInt",
         "semiMajorAxisX",
         "semiMinorAxisX",
+        "refinedCenterLatIdx",
+        "refinedCenterLongIdx"
     ])
 
-    useEffect(() => {
-        form.setValue('centerLat', centerLatInt * centerLatIdx - 90)
-    }, [centerLatIdx, centerLatInt])
+    const finalCenterLat = useMemo(() => 
+        centerLat + centerLatInt / 8 * refinedCenterLatIdx
+    , [centerLat, refinedCenterLatIdx])
 
-    useEffect(() => {
-        form.setValue('centerLong', centerLongInt * centerLongIdx - 180)
-    }, [centerLongIdx, centerLongInt])
+    const finalCenterLong = useMemo(() => 
+        centerLong + centerLongInt / 8 * refinedCenterLongIdx
+    , [centerLong, refinedCenterLongIdx])
 
-    useEffect(() => {
-        form.setValue('semiMajorAxis', semiMajorAxisIdx === 0 ? 
+    const finalSemiMajorAxis = useMemo(() => 
+        semiMajorAxisIdx === 0 ? 
             radii[0] - semiMajorAxisX * radii[0] :
             radii[semiMajorAxisIdx] - semiMajorAxisX * 
             (radii[semiMajorAxisIdx] - radii[semiMajorAxisIdx - 1])
-        )
-    }, [semiMajorAxisIdx, semiMajorAxisX])
+    , [semiMajorAxisIdx, semiMajorAxisX])
 
-    useEffect(() => {
-        form.setValue('semiMinorAxis', semiMinorAxisIdx === 0 ?
+    const finalSemiMinorAxis = useMemo(() => 
+        semiMinorAxisIdx === 0 ? 
             radii[0] - semiMinorAxisX * radii[0] :
             radii[semiMinorAxisIdx] - semiMinorAxisX * 
             (radii[semiMinorAxisIdx] - radii[semiMinorAxisIdx - 1])
-        )
-    }, [semiMinorAxisIdx, semiMinorAxisX])
+    , [semiMinorAxisIdx, semiMinorAxisX])
+
+    useEffect(() => {
+        form.setValue('centerLat', centerLatInt * centerLatIdx - 90)
+    }, [centerLatIdx])
+
+    useEffect(() => {
+        form.setValue('centerLong', centerLongInt * centerLongIdx - 180)
+    }, [centerLongIdx])
+
+    useEffect(() => {
+        form.setValue('semiMajorAxis', radii[semiMajorAxisIdx])
+    }, [semiMajorAxisIdx])
+
+    useEffect(() => {
+        form.setValue('semiMinorAxis', radii[semiMinorAxisIdx])
+    }, [semiMinorAxisIdx])
 
     useEffect(() => {
         form.setValue('azimuthAngle', 2.8125 * azimuthAngleIdx - 90)
@@ -410,15 +422,15 @@ export function EllipseSelect({ form }: { form: UseFormReturn<IFormInput> }) {
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 />
                 { 
-                    centerLat !== undefined && !Number.isNaN(centerLat) &&
-                    centerLong !== undefined && !Number.isNaN(centerLong) &&
-                    semiMajorAxis !== undefined && !Number.isNaN(semiMajorAxis) &&
-                    semiMinorAxis !== undefined && !Number.isNaN(semiMinorAxis) &&
+                    finalCenterLat !== undefined && !Number.isNaN(finalCenterLat) &&
+                    finalCenterLong !== undefined && !Number.isNaN(finalCenterLong) &&
+                    finalSemiMajorAxis !== undefined && !Number.isNaN(finalSemiMajorAxis) &&
+                    finalSemiMinorAxis !== undefined && !Number.isNaN(finalSemiMinorAxis) &&
                     azimuthAngle !== undefined && !Number.isNaN(azimuthAngle)
                 && 
                 <Ellipse 
-                    center={[centerLat, centerLong]}
-                    radii={[semiMajorAxis, semiMinorAxis]}
+                    center={[finalCenterLat, finalCenterLong]}
+                    radii={[finalSemiMajorAxis, finalSemiMinorAxis]}
                     tilt={azimuthAngle}
                     options={{
                         color: '#ff7961',

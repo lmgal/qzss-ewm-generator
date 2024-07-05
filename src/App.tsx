@@ -11,6 +11,7 @@ import { SeveritySelect } from './components/SeveritySelect'
 import { UTCSelect } from './components/UTCSelect'
 import { GuidanceSelect, guidanceLibraries } from './components/GuidanceSelect'
 import { EllipseSelect } from './components/EllipseSelect'
+import { ImprovedResolution } from './components/ImprovedResolution'
 
 Modal.setAppElement('#root')
 
@@ -21,15 +22,17 @@ function App() {
       customLibrary: guidanceLibraries['International'],
       centerLatIdx: 0,
       centerLongIdx: 0,
-      centerLatInt: 180 / ((2 ** 16)-1),
-      centerLongInt: 360 / ((2 ** 17)-1),
       semiMajorAxisIdx: 0,
       semiMinorAxisIdx: 0,
       semiMajorAxisX: 0,
       semiMinorAxisX: 0,
-      azimuthAngleIdx: 0
+      azimuthAngleIdx: 0,
+      refinedCenterLatIdx: 0,
+      refinedCenterLongIdx: 0,
     }
   })
+
+  const specificSettings = form.watch('specificSettings')
 
   return (
     <div className={`w-full h-full flex justify-center bg-gradient-to-br from-purple-700 to-amber-700`}>
@@ -69,8 +72,17 @@ function App() {
         </select>
         <h2 className='text-lg'>Instructions</h2>
         <GuidanceSelect form={form} />
-        <h2 className='text-lg font-bold col-span-2'>Ellipse Definition</h2>
+        <h2 className='text-xl font-bold col-span-2'>Ellipse Definition</h2>
         <EllipseSelect form={form} />
+        <h2 className='text-lg font-bold'>Specific Settings</h2>
+        <select {...form.register('specificSettings')}>
+            <option value='0'>Improved Resolution of Main Ellipse</option>
+            <option value='1'>Position of Center of Hazard</option>
+            <option value='2'>Second Ellipse Definition</option>
+            <option value='3'>Quantitative or Detailed Information related to Hazard Category</option>
+        </select>
+        { specificSettings === '0' && <ImprovedResolution form={form} />}
+        <button className='bg-blue-500 text-white rounded-lg p-2 col-span-2'>Generate</button>
       </div>
     </div>
   )

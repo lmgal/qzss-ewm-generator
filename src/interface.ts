@@ -41,7 +41,9 @@ export interface IFormInput {
     centerLatInt: number,
     centerLongInt: number,
     semiMajorAxisX: number,
-    semiMinorAxisX: number
+    semiMinorAxisX: number,
+    refinedCenterLat: number,
+    refinedCenterLong: number,
 }
 
 
