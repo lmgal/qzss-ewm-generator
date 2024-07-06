@@ -1,4 +1,4 @@
-import { MapContainer, TileLayer, useMap } from "react-leaflet" 
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet" 
 import Ellipse from "./Ellipse"
 import { UseFormReturn } from "react-hook-form"
 import { IFormInput } from "../interface"
@@ -17,6 +17,7 @@ const radii = Array.from({ length: 32 }).map((_, i) => {
 })
 const centerLatInt = 180 / ((2 ** 16) - 1)
 const centerLongInt = 360 / ((2 ** 17) - 1)
+const hazardCenterStep = 20 / (2 ** 7)
 
 const countryCapitalCoords: { [key: string]: [number, number] } = {
     "Afghanistan": [34.53, 69.17],
@@ -286,6 +287,9 @@ export function EllipseSelect({ form }: { form: UseFormReturn<IFormInput> }) {
         semiMinorAxisX,
         refinedCenterLatIdx,
         refinedCenterLongIdx,
+        hazardCenterDeltaLatIdx,
+        hazardCenterDeltaLongIdx,
+        specificSettings,
     ] = form.watch([
         "country",
         "centerLat",
@@ -299,7 +303,10 @@ export function EllipseSelect({ form }: { form: UseFormReturn<IFormInput> }) {
         "semiMajorAxisX",
         "semiMinorAxisX",
         "refinedCenterLatIdx",
-        "refinedCenterLongIdx"
+        "refinedCenterLongIdx",
+        "hazardCenterDeltaLatIdx",
+        "hazardCenterDeltaLongIdx",
+        "specificSettings",
     ])
 
     const finalCenterLat = useMemo(() => 
@@ -323,6 +330,18 @@ export function EllipseSelect({ form }: { form: UseFormReturn<IFormInput> }) {
             radii[semiMinorAxisIdx] - semiMinorAxisX * 
             (radii[semiMinorAxisIdx] - radii[semiMinorAxisIdx - 1])
     , [semiMinorAxisIdx, semiMinorAxisX])
+
+    const hazardCenterLat = useMemo(() =>
+        finalCenterLat + ( hazardCenterDeltaLatIdx >= 2 ** 6 ? 
+        (hazardCenterDeltaLatIdx + 1) * hazardCenterStep - 10 :
+        hazardCenterDeltaLatIdx * hazardCenterStep - 10 )
+    , [finalCenterLat, hazardCenterDeltaLatIdx])
+
+    const hazardCenterLong = useMemo(() =>
+        finalCenterLong + ( hazardCenterDeltaLongIdx >= 2 ** 6 ?
+        (hazardCenterDeltaLongIdx + 1) * hazardCenterStep - 10 :
+        hazardCenterDeltaLongIdx * hazardCenterStep - 10 )
+    , [finalCenterLong, hazardCenterDeltaLongIdx])
 
     useEffect(() => {
         form.setValue('centerLat', centerLatInt * centerLatIdx - 90)
@@ -440,6 +459,11 @@ export function EllipseSelect({ form }: { form: UseFormReturn<IFormInput> }) {
                         weight: 2,
                     }}
                 />}
+                { specificSettings === '1' &&
+                    <Marker position={[hazardCenterLat, hazardCenterLong]}>
+                        <Popup>Center of Hazard</Popup>
+                    </Marker>
+                }
             </MapContainer>
             <div className="grid grid-cols-[max-content_1fr] items-center gap-1">
                 <label>Center Latitude: </label>

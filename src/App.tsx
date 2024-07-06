@@ -12,6 +12,8 @@ import { UTCSelect } from './components/UTCSelect'
 import { GuidanceSelect, guidanceLibraries } from './components/GuidanceSelect'
 import { EllipseSelect } from './components/EllipseSelect'
 import { ImprovedResolution } from './components/ImprovedResolution'
+import { HazardCenter } from './components/HazardCenter'
+import { useEffect } from 'react'
 
 Modal.setAppElement('#root')
 
@@ -29,10 +31,32 @@ function App() {
       azimuthAngleIdx: 0,
       refinedCenterLatIdx: 0,
       refinedCenterLongIdx: 0,
+      hazardCenterDeltaLatIdx: 0,
+      hazardCenterDeltaLongIdx: 0,
     }
   })
 
   const specificSettings = form.watch('specificSettings')
+
+  useEffect(() => {
+    if (specificSettings !== '0') {
+      // Reset the values of the improved resolution
+      form.setValue('refinedCenterLatIdx', 0)
+      form.setValue('refinedCenterLongIdx', 0)
+      form.setValue('semiMajorAxisX', 0)
+      form.setValue('semiMinorAxisX', 0)
+    } 
+
+    if (specificSettings !== '1') {
+      // Reset the values of the hazard center
+      form.setValue('hazardCenterDeltaLatIdx', 0)
+      form.setValue('hazardCenterDeltaLongIdx', 0)
+    } else {
+      // Set marker to center
+      form.setValue('hazardCenterDeltaLatIdx', 2**6)
+      form.setValue('hazardCenterDeltaLongIdx', 2**6)
+    }
+  }, [specificSettings])
 
   return (
     <div className={`w-full h-full flex justify-center bg-gradient-to-br from-purple-700 to-amber-700`}>
@@ -82,6 +106,7 @@ function App() {
             <option value='3'>Quantitative or Detailed Information related to Hazard Category</option>
         </select>
         { specificSettings === '0' && <ImprovedResolution form={form} />}
+        { specificSettings === '1' && <HazardCenter form={form} /> }
         <button className='bg-blue-500 text-white rounded-lg p-2 col-span-2'>Generate</button>
       </div>
     </div>

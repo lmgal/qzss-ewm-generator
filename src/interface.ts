@@ -38,12 +38,12 @@ export interface IFormInput {
     semiMinorAxisIdx: number,
     azimuthAngleIdx: number,
     specificSettings: string,
-    centerLatInt: number,
-    centerLongInt: number,
     semiMajorAxisX: number,
     semiMinorAxisX: number,
-    refinedCenterLat: number,
-    refinedCenterLong: number,
+    refinedCenterLatIdx: number,
+    refinedCenterLongIdx: number,
+    hazardCenterDeltaLatIdx: number,
+    hazardCenterDeltaLongIdx: number,
 }
 
 
