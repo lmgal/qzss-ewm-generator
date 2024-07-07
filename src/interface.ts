@@ -48,6 +48,7 @@ export interface IFormInput {
     homotheticFactor: number,
     rotationAngle: number,
     secondEllipseGuidanceIdx: number,
+    modalOpen: boolean,
 }
 
 

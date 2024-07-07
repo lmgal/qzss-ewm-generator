@@ -82,13 +82,19 @@ export function ProviderSelect({ form }: { form: UseFormReturn<IFormInput> }) {
             </select>
             <button 
                 className="py-2 px-4 rounded border border-gray-500" 
-                onClick={() => setIsModalOpen(true)}
+                onClick={() => {
+                    setIsModalOpen(true)
+                    form.setValue('modalOpen', true)
+                }}
             >
                 Edit
             </button>
             <Modal 
                 isOpen={isModalOpen}
-                onRequestClose={() => setIsModalOpen(false)}
+                onRequestClose={() => {
+                    setIsModalOpen(false)
+                    form.setValue('modalOpen', false)
+                }}
                 style={{
                     content: {
                         width: '50%',
@@ -99,7 +105,10 @@ export function ProviderSelect({ form }: { form: UseFormReturn<IFormInput> }) {
                 <div className="grid gap-3">
                     <div className='flex justify-between'>
                         <h2 className='text-xl font-bold'>Providers</h2>
-                        <button onClick={() => setIsModalOpen(false)}>
+                        <button onClick={() => {
+                            setIsModalOpen(false)
+                            form.setValue('modalOpen', false)
+                        }}>
                             Close
                         </button>
                     </div>

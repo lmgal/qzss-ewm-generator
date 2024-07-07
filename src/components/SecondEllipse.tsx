@@ -201,7 +201,10 @@ export function SecondEllipse({ form }: { form: UseFormReturn<IFormInput> }) {
                     ))}
                 </select>
                 <button 
-                    onClick={() => setIsModalOpen(true)}
+                    onClick={() => {
+                        setIsModalOpen(true)
+                        form.setValue('modalOpen', true)
+                    }}
                     className="py-2 px-4 rounded border border-gray-500"
                 >
                     Show details
@@ -209,14 +212,20 @@ export function SecondEllipse({ form }: { form: UseFormReturn<IFormInput> }) {
             </div>
             <ReactModal
                 isOpen={isModalOpen}
-                onRequestClose={() => setIsModalOpen(false)}
+                onRequestClose={() => {
+                    setIsModalOpen(false)
+                    form.setValue('modalOpen', false)
+                }}
             >
                 <div className="flex justify-between">
                     <h2 className="text-xl font-bold">
                         Guidance valid for Second Ellipse
                     </h2>
                     <button
-                        onClick={() => setIsModalOpen(false)}
+                        onClick={() => {
+                            setIsModalOpen(false)
+                            form.setValue('modalOpen', false)
+                        }}
                         className="py-2 px-4 rounded border border-gray-500"
                     >
                         Close

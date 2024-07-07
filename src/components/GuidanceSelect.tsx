@@ -467,7 +467,10 @@ export const GuidanceSelect = ({ form }: { form: UseFormReturn<IFormInput> }) =>
             }
             <Modal
                 isOpen={libModalIsOpen}
-                onRequestClose={() => setLibModalIsOpen(false)}
+                onRequestClose={() => {
+                    setLibModalIsOpen(false)
+                    form.setValue('modalOpen', false)
+                }}
             >
                 <div className='flex justify-between'>
                     <div>
@@ -476,7 +479,12 @@ export const GuidanceSelect = ({ form }: { form: UseFormReturn<IFormInput> }) =>
                             { !isLibEdit ? 'Edit' : 'Save' }
                         </button>
                     </div>
-                    <button onClick={() => setLibModalIsOpen(false)}>Close</button>
+                    <button onClick={() => {
+                        setLibModalIsOpen(false)
+                        form.setValue('modalOpen', false)
+                    }}>
+                        Close
+                    </button>
                 </div>
                 <div className='flex gap-5'>
                 { !isLibEdit ?
@@ -542,7 +550,10 @@ export const GuidanceSelect = ({ form }: { form: UseFormReturn<IFormInput> }) =>
             </Modal>
             <button 
                 className='py-2 px-4 rounded border border-gray-500' 
-                onClick={() => setLibModalIsOpen(true)}>
+                onClick={() => {
+                    setLibModalIsOpen(true)
+                    form.setValue('modalOpen', true)
+                }}>
                 Show Details
             </button>
         </div>

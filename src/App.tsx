@@ -34,6 +34,7 @@ function App() {
       refinedCenterLongIdx: 0,
       hazardCenterDeltaLatIdx: 0,
       hazardCenterDeltaLongIdx: 0,
+      modalOpen: false,
     }
   })
 
@@ -42,20 +43,39 @@ function App() {
   useEffect(() => {
     if (specificSettings !== 0) {
       // Reset the values of the improved resolution
-      form.setValue('refinedCenterLatIdx', 0)
-      form.setValue('refinedCenterLongIdx', 0)
-      form.setValue('semiMajorAxisX', 0)
-      form.setValue('semiMinorAxisX', 0)
+      form.reset({
+        ...form.getValues(),
+        refinedCenterLatIdx: 0,
+        refinedCenterLongIdx: 0,
+        semiMajorAxisX: 0,
+        semiMinorAxisX: 0,
+      })
     } 
 
     if (specificSettings !== 1) {
       // Reset the values of the hazard center
-      form.setValue('hazardCenterDeltaLatIdx', 0)
-      form.setValue('hazardCenterDeltaLongIdx', 0)
+      form.reset({
+        ...form.getValues(),
+        hazardCenterDeltaLatIdx: 0,
+        hazardCenterDeltaLongIdx: 0,
+      })
     } else {
       // Set marker to center
-      form.setValue('hazardCenterDeltaLatIdx', 2**6)
-      form.setValue('hazardCenterDeltaLongIdx', 2**6)
+      form.reset({
+        ...form.getValues(),
+        hazardCenterDeltaLatIdx: 2**6,
+        hazardCenterDeltaLongIdx: 2**6,
+      })
+    }
+
+    if (specificSettings !== 2) {
+      // Reset the values of the second ellipse
+      form.reset({
+        ...form.getValues(),
+        ellipseCenterShift: 0,
+        homotheticFactor: 3,
+        rotationAngle: 0,
+      })
     }
   }, [specificSettings])
 

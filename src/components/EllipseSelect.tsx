@@ -271,6 +271,9 @@ const countryCapitalCoords: { [key: string]: [number, number] } = {
     "Zambia": [-13.13, 27.85]
 }
 
+const sin = (deg: number) : number => Math.sin(deg * Math.PI / 180)
+const cos = (deg: number) : number => Math.cos(deg * Math.PI / 180)
+
 export function EllipseSelect({ form }: { form: UseFormReturn<IFormInput> }) {
     const mapRef = useRef<Map>(null)
     const [
@@ -289,7 +292,11 @@ export function EllipseSelect({ form }: { form: UseFormReturn<IFormInput> }) {
         refinedCenterLongIdx,
         hazardCenterDeltaLatIdx,
         hazardCenterDeltaLongIdx,
+        ellipseCenterShift,
+        homotheticFactor,
+        rotationAngle,
         specificSettings,
+        modalOpen
     ] = form.watch([
         "country",
         "centerLat",
@@ -306,9 +313,34 @@ export function EllipseSelect({ form }: { form: UseFormReturn<IFormInput> }) {
         "refinedCenterLongIdx",
         "hazardCenterDeltaLatIdx",
         "hazardCenterDeltaLongIdx",
+        "ellipseCenterShift",
+        "homotheticFactor",
+        "rotationAngle",
         "specificSettings",
+        "modalOpen"
     ])
 
+    useEffect(() => {
+        form.setValue('centerLat', centerLatInt * centerLatIdx - 90)
+    }, [centerLatIdx])
+
+    useEffect(() => {
+        form.setValue('centerLong', centerLongInt * centerLongIdx - 180)
+    }, [centerLongIdx])
+
+    useEffect(() => {
+        form.setValue('semiMajorAxis', radii[semiMajorAxisIdx])
+    }, [semiMajorAxisIdx])
+
+    useEffect(() => {
+        form.setValue('semiMinorAxis', radii[semiMinorAxisIdx])
+    }, [semiMinorAxisIdx])
+
+    useEffect(() => {
+        form.setValue('azimuthAngle', 2.8125 * azimuthAngleIdx - 90)
+    }, [azimuthAngleIdx])
+
+    // Calculate the final ellipse definition, including the improved resolution
     const finalCenterLat = useMemo(() => 
         centerLat + centerLatInt / 8 * refinedCenterLatIdx
     , [centerLat, refinedCenterLatIdx])
@@ -331,6 +363,8 @@ export function EllipseSelect({ form }: { form: UseFormReturn<IFormInput> }) {
             (radii[semiMinorAxisIdx] - radii[semiMinorAxisIdx - 1])
     , [semiMinorAxisIdx, semiMinorAxisX])
 
+
+    // Calculate the hazard center
     const hazardCenterLat = useMemo(() =>
         finalCenterLat + ( hazardCenterDeltaLatIdx >= 2 ** 6 ? 
         (hazardCenterDeltaLatIdx + 1) * hazardCenterStep - 10 :
@@ -343,25 +377,25 @@ export function EllipseSelect({ form }: { form: UseFormReturn<IFormInput> }) {
         hazardCenterDeltaLongIdx * hazardCenterStep - 10 )
     , [finalCenterLong, hazardCenterDeltaLongIdx])
 
-    useEffect(() => {
-        form.setValue('centerLat', centerLatInt * centerLatIdx - 90)
-    }, [centerLatIdx])
 
-    useEffect(() => {
-        form.setValue('centerLong', centerLongInt * centerLongIdx - 180)
-    }, [centerLongIdx])
+    // Calculate the second ellipse definition
+    const secondEllipseCenterLat = useMemo(() => 
+        finalCenterLat + (ellipseCenterShift * sin(rotationAngle * 11.25 + azimuthAngle) *
+            finalSemiMajorAxis / 111319.9)
+    , [finalCenterLat, ellipseCenterShift, rotationAngle, finalSemiMajorAxis, azimuthAngle])
 
-    useEffect(() => {
-        form.setValue('semiMajorAxis', radii[semiMajorAxisIdx])
-    }, [semiMajorAxisIdx])
+    const secondEllipseCenterLong = useMemo(() =>
+        finalCenterLong + (ellipseCenterShift * cos(rotationAngle * 11.25 + azimuthAngle) *
+            finalSemiMajorAxis / 111319.9)
+    , [finalCenterLong, ellipseCenterShift, rotationAngle, finalSemiMajorAxis, azimuthAngle])
 
-    useEffect(() => {
-        form.setValue('semiMinorAxis', radii[semiMinorAxisIdx])
-    }, [semiMinorAxisIdx])
+    const secondEllipseSemiMajorAxis = useMemo(() =>
+        finalSemiMajorAxis * (0.25 * homotheticFactor + 0.25)
+    , [finalSemiMajorAxis, homotheticFactor])
 
-    useEffect(() => {
-        form.setValue('azimuthAngle', 2.8125 * azimuthAngleIdx - 90)
-    }, [azimuthAngleIdx])
+    const secondEllipseSemiMinorAxis = useMemo(() =>
+        finalSemiMinorAxis * (0.25 * homotheticFactor + 0.25)
+    , [finalSemiMinorAxis, homotheticFactor])
 
     useEffect(() => {
         const country = getCountryFromBin(countryBin)
@@ -421,7 +455,7 @@ export function EllipseSelect({ form }: { form: UseFormReturn<IFormInput> }) {
             form.setValue('azimuthAngleIdx', 0)
         })
     }, [mapRef?.current, form])
-
+    
     return (
         <div className="grid gap-1 col-span-2">
             <div className="grid grid-cols-[max-content_1fr] items-center gap-1">
@@ -431,10 +465,11 @@ export function EllipseSelect({ form }: { form: UseFormReturn<IFormInput> }) {
                 center={countryCapitalCoords['Afghanistan']}
                 zoom={13}
                 scrollWheelZoom={false}
-                className="w-full h-96"
+                className={`w-full h-96 sticky top-0`}
                 maxBounds={[[90, 180], [-90, -180]]}
                 ref={mapRef}
             >
+                { !modalOpen && <>
                 <GeoSearch />
                 <TileLayer 
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -458,12 +493,37 @@ export function EllipseSelect({ form }: { form: UseFormReturn<IFormInput> }) {
                         opacity: 1,
                         weight: 2,
                     }}
-                />}
+                >
+                    <Popup>Main Ellipse</Popup>
+                </Ellipse>}
+                { 
+                    specificSettings === 2 &&
+                    secondEllipseCenterLat !== undefined && !Number.isNaN(secondEllipseCenterLat) &&
+                    secondEllipseCenterLong !== undefined && !Number.isNaN(secondEllipseCenterLong) &&
+                    secondEllipseSemiMajorAxis !== undefined && !Number.isNaN(secondEllipseSemiMajorAxis) &&
+                    secondEllipseSemiMinorAxis !== undefined && !Number.isNaN(secondEllipseSemiMinorAxis) &&
+                    azimuthAngle !== undefined && !Number.isNaN(azimuthAngle)
+                &&
+                <Ellipse 
+                    center={[secondEllipseCenterLat, secondEllipseCenterLong]}
+                    radii={[secondEllipseSemiMajorAxis, secondEllipseSemiMinorAxis]}
+                    tilt={azimuthAngle}
+                    options={{
+                        color: 'blue',
+                        fillColor: 'blue',
+                        fillOpacity: 0.5,
+                        opacity: 1,
+                        weight: 2,
+                    }}
+                >
+                    <Popup>Second Ellipse</Popup>
+                </Ellipse>}
                 { specificSettings === 1 &&
                     <Marker position={[hazardCenterLat, hazardCenterLong]}>
                         <Popup>Center of Hazard</Popup>
                     </Marker>
                 }
+                </>}
             </MapContainer>
             <div className="grid grid-cols-[max-content_1fr] items-center gap-1">
                 <label>Center Latitude: </label>

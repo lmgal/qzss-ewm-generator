@@ -72,6 +72,5 @@ export function UTCSelect({ form }: { form: UseFormReturn<IFormInput> }) {
             })} />
             <p>24-hour clock</p>
         </div>
-        
     )
 }
