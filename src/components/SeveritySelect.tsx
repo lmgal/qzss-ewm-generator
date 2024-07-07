@@ -1,6 +1,5 @@
 import { IFormInput } from "../interface"
 import { UseFormReturn } from "react-hook-form"
-import { intToBin } from "../utils"
 
 const severities = [
     "Unknown",
@@ -11,9 +10,11 @@ const severities = [
 
 export function SeveritySelect({ form }: { form: UseFormReturn<IFormInput> }) {
     return (
-        <select {...form.register('hazardSeverity')}>
+        <select {...form.register('hazardSeverity', {
+            valueAsNumber: true
+        })}>
             {severities.map((severity, i) => (
-                <option key={severity} value={intToBin(i, 2)}>
+                <option key={severity} value={i}>
                     {severity}
                 </option>
             ))}

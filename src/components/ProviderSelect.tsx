@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react"
 import { UseFormReturn, useFieldArray } from "react-hook-form"
-import { intToBin } from "../utils"
 import { IFormInput } from "../interface"
 import Modal from 'react-modal'
 
@@ -65,9 +64,11 @@ export function ProviderSelect({ form }: { form: UseFormReturn<IFormInput> }) {
 
     return (
         <div className="flex gap-1">
-            <select {...form.register("providerId")} className="w-full">
+            <select {...form.register("providerId", {
+                valueAsNumber: true
+            })} className="w-full">
                 {watchProviders.map((provider, i) => (
-                    <option key={i} value={intToBin(i, 9)}>
+                    <option key={i} value={i}>
                         {provider.name}
                     </option>
                 ))}

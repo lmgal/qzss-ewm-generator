@@ -1,4 +1,3 @@
-import { intToBin } from "../utils"
 import { UseFormReturn } from "react-hook-form"
 import { IFormInput } from "../interface"
 import { useEffect } from "react"
@@ -15,18 +14,20 @@ export function UTCSelect({ form }: { form: UseFormReturn<IFormInput> }) {
             hazardMinute, hazardIsAM, hazardIs24HourClock] = watchUTCSelects
 
         let hazardUTC = 1
-        hazardUTC += parseInt(hazardMinute)
-        hazardUTC += parseInt(hazardHour) * 60
-        hazardUTC += parseInt(hazardDay) * 60 * 24
-        if (parseInt(hazardIsAM) === 1 && !hazardIs24HourClock) 
+        hazardUTC += hazardMinute
+        hazardUTC += hazardHour * 60
+        hazardUTC += hazardDay * 60 * 24
+        if (hazardIsAM === 1 && !hazardIs24HourClock) 
             hazardUTC += 12 * 60
 
-        setValue('hazardUTCTime', intToBin(hazardUTC, 14))
+        setValue('hazardUTCTime', hazardUTC)
     }, [watchUTCSelects])
 
     return (
         <div className="flex items-center gap-2">
-            <select {...form.register('hazardDay')}>
+            <select {...form.register('hazardDay', {
+                valueAsNumber: true
+            })}>
                 <option value={0}>Monday</option>
                 <option value={1}>Tuesday</option>
                 <option value={2}>Wednesday</option>
@@ -35,7 +36,9 @@ export function UTCSelect({ form }: { form: UseFormReturn<IFormInput> }) {
                 <option value={5}>Saturday</option>
                 <option value={6}>Sunday</option>
             </select>
-            <select {...form.register('hazardHour')}>
+            <select {...form.register('hazardHour', {
+                valueAsNumber: true
+            })}>
                 { watch24HourClock && <option value={0}>0</option> }
                 {[...Array(11).keys()].map((hour) => (
                     <option key={hour + 1} value={hour + 1}>
@@ -49,18 +52,24 @@ export function UTCSelect({ form }: { form: UseFormReturn<IFormInput> }) {
                     </option>
                 ))}
             </select>
-            <select {...form.register('hazardMinute')}>
+            <select {...form.register('hazardMinute', {
+                valueAsNumber: true
+            })}>
                 {[...Array(60).keys()].map((minute) => (
                     <option key={minute} value={minute}>
                         {minute.toString().padStart(2, '0')}
                     </option>
                 ))}
             </select>
-            { !watch24HourClock && <select {...form.register('hazardIsAM')}>
+            { !watch24HourClock && <select {...form.register('hazardIsAM', {
+                valueAsNumber: true
+            })}>
                 <option value={0}>AM</option>
                 <option value={1}>PM</option>
             </select> }
-            <input type="checkbox" {...form.register('hazardIs24HourClock')} />
+            <input type="checkbox" {...form.register('hazardIs24HourClock', {
+                valueAsNumber: true
+            })} />
             <p>24-hour clock</p>
         </div>
         

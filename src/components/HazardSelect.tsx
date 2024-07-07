@@ -1,6 +1,5 @@
 import { UseFormReturn } from "react-hook-form"
 import { IFormInput } from "../interface"
-import { intToBin } from "../utils"
 
 const hazards = [
     "not used",
@@ -135,9 +134,11 @@ const hazards = [
 
 export function HazardSelect({ form }: { form: UseFormReturn<IFormInput> }) {
     return (
-        <select {...form.register('hazardTypeCategory')}>
+        <select {...form.register('hazardTypeCategory', {
+            valueAsNumber: true
+        })}>
             { hazards.map((hazard, i) => (
-                <option key={i} value={intToBin(i, 7)}>
+                <option key={i} value={i}>
                     {hazard}
                 </option>
             ))}

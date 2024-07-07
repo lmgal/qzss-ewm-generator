@@ -1,6 +1,5 @@
 import { UseFormReturn } from 'react-hook-form'
 import { IFormInput } from '../interface'
-import { intToBin } from '../utils'
 
 const countries = [
     "Afghanistan",
@@ -254,15 +253,17 @@ const countries = [
     "Zambia"
 ]
 
-export function getCountryFromBin(country: string) {
-    return countries[parseInt(country, 2)]
+export function getCountryFromBin(country: number) {
+    return countries[country]
 }
 
 export function CountrySelect({ form }: { form: UseFormReturn<IFormInput> }) {
     return (
-        <select {...form.register('country')}>
+        <select {...form.register('country', {
+            valueAsNumber: true
+        })}>
             {countries.map((country, i) => (
-                <option key={country} value={intToBin(i, 9)}>
+                <option key={country} value={i}>
                     {country}
                 </option>
             ))}

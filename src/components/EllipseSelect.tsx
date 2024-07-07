@@ -459,7 +459,7 @@ export function EllipseSelect({ form }: { form: UseFormReturn<IFormInput> }) {
                         weight: 2,
                     }}
                 />}
-                { specificSettings === '1' &&
+                { specificSettings === 1 &&
                     <Marker position={[hazardCenterLat, hazardCenterLong]}>
                         <Popup>Center of Hazard</Popup>
                     </Marker>

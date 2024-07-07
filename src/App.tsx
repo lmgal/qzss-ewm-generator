@@ -14,6 +14,7 @@ import { EllipseSelect } from './components/EllipseSelect'
 import { ImprovedResolution } from './components/ImprovedResolution'
 import { HazardCenter } from './components/HazardCenter'
 import { useEffect } from 'react'
+import { SecondEllipse } from './components/SecondEllipse'
 
 Modal.setAppElement('#root')
 
@@ -39,7 +40,7 @@ function App() {
   const specificSettings = form.watch('specificSettings')
 
   useEffect(() => {
-    if (specificSettings !== '0') {
+    if (specificSettings !== 0) {
       // Reset the values of the improved resolution
       form.setValue('refinedCenterLatIdx', 0)
       form.setValue('refinedCenterLongIdx', 0)
@@ -47,7 +48,7 @@ function App() {
       form.setValue('semiMinorAxisX', 0)
     } 
 
-    if (specificSettings !== '1') {
+    if (specificSettings !== 1) {
       // Reset the values of the hazard center
       form.setValue('hazardCenterDeltaLatIdx', 0)
       form.setValue('hazardCenterDeltaLongIdx', 0)
@@ -63,11 +64,13 @@ function App() {
       <div className='grid grid-cols-[max-content_1fr] gap-3 bg-white p-8 rounded-lg my-16 items-center'>
         <h1 className='text-2xl font-bold col-span-2'>QZSS EWS Message Generator</h1>
         <h2 className='text-lg font-bold'>Type</h2>
-        <select {...form.register('type')}>
-          <option value='00'>Test</option>
-          <option value='01'>Alert</option>
-          <option value='10'>Update</option>
-          <option value='11'>All Clear</option>
+        <select {...form.register('type', {
+          valueAsNumber: true
+        })}>
+          <option value={0}>Test</option>
+          <option value={1}>Alert</option>
+          <option value={2}>Update</option>
+          <option value={3}>All Clear</option>
         </select>
         <h2 className='text-lg font-bold'>Country</h2>
         <CountrySelect form={form} />
@@ -82,12 +85,16 @@ function App() {
         <UTCSelect form={form} />
         <h2 className='text-lg font-bold col-span-2'>Guidance</h2>
         <h2 className='text-lg'>Library</h2>
-        <select {...form.register('libSelection')}>
-            <option value='0'>International Guidance Library</option>
-            <option value='1'>Country/Region Guidance Library</option>
+        <select {...form.register('libSelection', {
+          valueAsNumber: true
+        })}>
+            <option value={0}>International Guidance Library</option>
+            <option value={1}>Country/Region Guidance Library</option>
         </select>
         <h2 className='text-lg'>Version</h2>
-        <select {...form.register('libVersion')}>
+        <select {...form.register('libVersion', {
+          valueAsNumber: true
+        })}>
             {[...Array(8).keys()].map((version) => (
                 <option key={version} value={version}>
                     #{version + 1}
@@ -99,14 +106,17 @@ function App() {
         <h2 className='text-xl font-bold col-span-2'>Ellipse Definition</h2>
         <EllipseSelect form={form} />
         <h2 className='text-lg font-bold'>Specific Settings</h2>
-        <select {...form.register('specificSettings')}>
-            <option value='0'>Improved Resolution of Main Ellipse</option>
-            <option value='1'>Position of Center of Hazard</option>
-            <option value='2'>Second Ellipse Definition</option>
-            <option value='3'>Quantitative or Detailed Information related to Hazard Category</option>
+        <select {...form.register('specificSettings', {
+          valueAsNumber: true
+        })}>
+            <option value={0}>Improved Resolution of Main Ellipse</option>
+            <option value={1}>Position of Center of Hazard</option>
+            <option value={2}>Second Ellipse Definition</option>
+            <option value={3}>Quantitative or Detailed Information related to Hazard Category</option>
         </select>
-        { specificSettings === '0' && <ImprovedResolution form={form} />}
-        { specificSettings === '1' && <HazardCenter form={form} /> }
+        { specificSettings === 0 && <ImprovedResolution form={form} />}
+        { specificSettings === 1 && <HazardCenter form={form} /> }
+        { specificSettings === 2 && <SecondEllipse form={form} /> }
         <button className='bg-blue-500 text-white rounded-lg p-2 col-span-2'>Generate</button>
       </div>
     </div>

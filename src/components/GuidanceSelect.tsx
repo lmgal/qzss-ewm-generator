@@ -2,7 +2,6 @@ import { UseFormReturn } from 'react-hook-form'
 import { IFormInput } from '../interface'
 import { getCountryFromBin } from './CountrySelect'
 import { useEffect, useState } from 'react'
-import { intToBin } from '../utils'
 import { useFieldArray } from 'react-hook-form'
 import Modal from 'react-modal'
 import { InstructsInput } from './InstructsInput'
@@ -434,7 +433,7 @@ export const GuidanceSelect = ({ form }: { form: UseFormReturn<IFormInput> }) =>
     })
 
     useEffect(() => {
-        if (watchLibSelection === '0') {
+        if (watchLibSelection === 0) {
             form.setValue('customLibrary', guidanceLibraries['International'])
         } else {
             const country = getCountryFromBin(watchCountry)
@@ -455,11 +454,11 @@ export const GuidanceSelect = ({ form }: { form: UseFormReturn<IFormInput> }) =>
         <div className='flex gap-1'>
             {
                 watchLibrary.map((list, i) => (
-                    <select key={i} {...form.register(`libActions.${i}`)}>
+                    <select key={i} {...form.register(`libActions.${i}`, {
+                        valueAsNumber: true
+                    })}>
                         {list.instructs.map((instruct, j) => (
-                            <option key={instruct.code} value={intToBin(
-                                j, list.bits
-                            )}>
+                            <option key={instruct.code} value={j}>
                                 {instruct.code}
                             </option>
                         ))}
