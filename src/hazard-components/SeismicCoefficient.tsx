@@ -14,15 +14,18 @@ const coefficients = [
 
 export function SeismicCoefficient({ form }: { form: UseFormReturn<IFormInput> }) {
   return (
-    <select {...form.register('seismicCoefficient', {
-      valueAsNumber: true
-    })}>
-      <option key={-1} value={-1} selected disabled>Select Seismic Coefficient</option>
-      { coefficients.map((coefficient, i) => (
-        <option key={i} value={i}>
-          {coefficient}
-        </option>
-      )) }
-    </select>
+    <>
+      <label>Seismic Coefficient</label>
+      <select {...form.register('seismicCoefficient', {
+        valueAsNumber: true
+      })}>
+        { coefficients.map((coefficient, i) => (
+          <option key={i} value={i}>
+            {coefficient}
+          </option>
+        )) }
+      </select>
+      <span className="text-xs col-span-2">Reference: This scale is used in Japan to provide information about shaking level.</span>
+    </>
   )
 }

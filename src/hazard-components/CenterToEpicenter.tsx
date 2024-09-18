@@ -23,7 +23,7 @@ export function CenterToEpicenter({ form }: { form: UseFormReturn<IFormInput> })
   const length = lengthFactors[lengthIdx] * finalSemiMajorAxis
   
   return (
-    <div className="grid gap-1">
+    <div className="grid gap-1 col-span-2">
         <label>Azimuth from Center of Main Ellipse to Epicenter: { azimuth }</label>
         <input type="range"
             {...form.register('azimuthFromCenterToEpicenterIdx', {

@@ -15,16 +15,19 @@ const magnitudes = [
 
 export function Magnitude({ form }: { form: UseFormReturn<IFormInput> }) {
   return (
-    <select {...form.register('magnitude', {
-      valueAsNumber: true
-    })}>
-      <option key={-1} value={-1} selected disabled>Select Magnitude</option>
-      { magnitudes.map((magnitude, i) => (
-        <option key={i} value={i}>
-          {magnitude.magnitude} {magnitude.description}
-        </option>
-      )
-      )}
-    </select>
+    <>
+      <label>Magnitude</label>
+      <select {...form.register('magnitude', {
+        valueAsNumber: true
+      })}>
+        {magnitudes.map((magnitude, i) => (
+          <option key={i} value={i}>
+            {magnitude.magnitude}, {magnitude.description}
+          </option>
+        )
+        )}
+      </select>
+      <span className="text-xs col-span-2">Reference: Richter Magnitude Scale</span>
+    </>
   )
 }

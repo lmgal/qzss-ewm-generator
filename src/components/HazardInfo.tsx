@@ -4,6 +4,15 @@ import { IFormInput } from "../interface"
 import { Magnitude } from "../hazard-components/Magnitude"
 import { SeismicCoefficient } from "../hazard-components/SeismicCoefficient"
 import { CenterToEpicenter } from "../hazard-components/CenterToEpicenter"
+import { WaveHeight } from "../hazard-components/WaveHeight"
+import { TemperatureRange } from "../hazard-components/TemperatureRange"
+import { HurricaneCategory } from "../hazard-components/HurricaneCategories"
+import { WindSpeed } from "../hazard-components/WindSpeed"
+import { RainfallAmount } from "../hazard-components/RainfallAmount"
+import { TyphoonCategory } from "../hazard-components/TyphoonCategories"
+import { TornadoProbability } from "../hazard-components/TornadoProbability"
+import { DamageCategory } from "../hazard-components/DamageCategory"
+import { LightningIntensity } from "../hazard-components/LightningIntensity"
 
 export function HazardInfo({ form }: { form: UseFormReturn<IFormInput> }) {
   const hazardInfo = form.watch('hazardInfo')  
@@ -17,12 +26,55 @@ export function HazardInfo({ form }: { form: UseFormReturn<IFormInput> }) {
             <CenterToEpicenter form={form} />
         </>
     ) 
+  if (hazardInfo === 'Tsunami')
+    hazardInfoOptions = (
+        <WaveHeight form={form} />
+    ) 
+  if (hazardInfo === 'Cold Wave')
+    hazardInfoOptions = (
+        <TemperatureRange form={form} />
+    )
+  if (hazardInfo === 'Tropical Cyclone (Hurricane)')
+    hazardInfoOptions = (
+        <>
+            <HurricaneCategory form={form} />
+            <WindSpeed form={form} />
+            <RainfallAmount form={form} />
+        </>
+    )
+  if (hazardInfo === 'Tropical Cyclone (Typhoon)')
+    hazardInfoOptions = (
+        <>
+            <TyphoonCategory form={form} />
+            <WindSpeed form={form} />
+            <RainfallAmount form={form} />
+        </>
+    )
+  if (hazardInfo === 'Tornado')
+    hazardInfoOptions = (
+        <>
+            <WindSpeed form={form} />
+            <RainfallAmount form={form} />
+            <TornadoProbability form={form} />
+        </>
+    )
+  if (hazardInfo === 'Storm or Thunderstorm')
+    hazardInfoOptions = (
+        <>
+            <WindSpeed form={form} />
+            <RainfallAmount form={form} />
+            <DamageCategory form={form} />
+            <LightningIntensity form={form} />
+        </>
+    )
+
   
 
   return (
-    <div className="col-span-2 grid gap-1">
+    <div className="col-span-2 grid grid-cols-[max-content_1fr] items-center gap-1 gap-y-2">
       <select 
         {...form.register('hazardInfo')}
+        className="col-span-2"
       >
         <option value='' selected disabled>Select Hazard Category</option>
         <option>Earthquake</option>
@@ -70,6 +122,7 @@ export function HazardInfo({ form }: { form: UseFormReturn<IFormInput> }) {
         <option>Nuclear Hazard</option>
         <option>Explosive Hazard</option>
       </select>
+      { hazardInfo !== '' && <h2 className="font-bold col-span-2">Detailed Information</h2>}
       { hazardInfoOptions }
     </div>
   )
