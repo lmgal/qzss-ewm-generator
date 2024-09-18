@@ -18,7 +18,7 @@ export interface IFormInput {
     hazardExpectedDuration: number,
     libSelection: number,
     libVersion: number,
-    libActions: Array<string>,
+    libActions: Array<number>,
     customLibrary: Array<{
         bits: number,
         description: string
