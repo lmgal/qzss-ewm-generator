@@ -15,6 +15,7 @@ import { ImprovedResolution } from './components/ImprovedResolution'
 import { HazardCenter } from './components/HazardCenter'
 import { useEffect } from 'react'
 import { SecondEllipse } from './components/SecondEllipse'
+import { HazardInfo } from './components/HazardInfo'
 
 Modal.setAppElement('#root')
 
@@ -35,6 +36,8 @@ function App() {
       hazardCenterDeltaLatIdx: 0,
       hazardCenterDeltaLongIdx: 0,
       modalOpen: false,
+      azimuthFromCenterToEpicenterIdx: 0,
+      lengthBetweenCenterAndEpicenterIdx: 0,
     }
   })
 
@@ -75,6 +78,14 @@ function App() {
         ellipseCenterShift: 0,
         homotheticFactor: 3,
         rotationAngle: 0,
+      })
+    }
+    
+    if (specificSettings !== 3) {
+      // Reset the values of the hazard info
+      form.reset({
+        ...form.getValues(),
+        hazardInfo: ''
       })
     }
   }, [specificSettings])
@@ -137,6 +148,7 @@ function App() {
         { specificSettings === 0 && <ImprovedResolution form={form} />}
         { specificSettings === 1 && <HazardCenter form={form} /> }
         { specificSettings === 2 && <SecondEllipse form={form} /> }
+        { specificSettings === 3 && <HazardInfo form={form} /> }
         <button className='bg-blue-500 text-white rounded-lg p-2 col-span-2'>Generate</button>
       </div>
     </div>

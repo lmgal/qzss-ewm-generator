@@ -1,17 +1,7 @@
 import { UseFormReturn } from "react-hook-form"
 import { IFormInput } from "../interface"
 import { useMemo } from "react"
-
-// TODO: Find a more elegant way to do this, instead of copying the same code from EllipseSelect.tsx
-const minRadius = 216.20
-const maxRadius = 2500000
-const radii = Array.from({ length: 32 }).map((_, i) => {
-    const exp = Math.log10(minRadius) + 
-        i * (Math.log10(maxRadius) - Math.log10(minRadius)) / 31
-    return 10 ** exp
-})
-const centerLatInt = 180 / ((2 ** 16) - 1)
-const centerLongInt = 360 / ((2 ** 17) - 1)
+import { radii, centerLatInt, centerLongInt } from "../constants"
 
 const refinedLatInt = centerLatInt / 8
 const refinedLongInt = centerLongInt / 8

@@ -5,18 +5,10 @@ import { IFormInput } from "../interface"
 import { useEffect, useMemo, useRef } from "react"
 import { getCountryFromBin } from "./CountrySelect"
 import { GeoSearch } from "./GeoSearch"
+import { minRadius, maxRadius, radii, centerLatInt, centerLongInt, lengthFactors } from "../constants"
 
 type Map = ReturnType<typeof useMap>
 
-const minRadius = 216.20
-const maxRadius = 2500000
-const radii = Array.from({ length: 32 }).map((_, i) => {
-    const exp = Math.log10(minRadius) + 
-        i * (Math.log10(maxRadius) - Math.log10(minRadius)) / 31
-    return 10 ** exp
-})
-const centerLatInt = 180 / ((2 ** 16) - 1)
-const centerLongInt = 360 / ((2 ** 17) - 1)
 const hazardCenterStep = 20 / (2 ** 7)
 
 const countryCapitalCoords: { [key: string]: [number, number] } = {
@@ -296,7 +288,10 @@ export function EllipseSelect({ form }: { form: UseFormReturn<IFormInput> }) {
         homotheticFactor,
         rotationAngle,
         specificSettings,
-        modalOpen
+        modalOpen,
+        hazardInfo,
+        azimuthFromCenterToEpicenterIdx,
+        lengthBetweenCenterAndEpicenterIdx
     ] = form.watch([
         "country",
         "centerLat",
@@ -317,7 +312,10 @@ export function EllipseSelect({ form }: { form: UseFormReturn<IFormInput> }) {
         "homotheticFactor",
         "rotationAngle",
         "specificSettings",
-        "modalOpen"
+        "modalOpen",
+        "hazardInfo",
+        "azimuthFromCenterToEpicenterIdx",
+        "lengthBetweenCenterAndEpicenterIdx"
     ])
 
     useEffect(() => {
@@ -396,6 +394,25 @@ export function EllipseSelect({ form }: { form: UseFormReturn<IFormInput> }) {
     const secondEllipseSemiMinorAxis = useMemo(() =>
         finalSemiMinorAxis * (0.25 * homotheticFactor + 0.25)
     , [finalSemiMinorAxis, homotheticFactor])
+
+
+    // Calculate the Earthquake epicenter
+    const epicenterLat = useMemo(() => {
+        const azimuth = azimuthFromCenterToEpicenterIdx * 22.5
+        const lengthInDeg = lengthFactors[lengthBetweenCenterAndEpicenterIdx] * (finalSemiMajorAxis / 111319.9)
+
+        return finalCenterLat + lengthInDeg * sin(azimuth)
+    }
+    , [finalCenterLat, finalSemiMajorAxis, lengthBetweenCenterAndEpicenterIdx, azimuthFromCenterToEpicenterIdx])
+
+    const epicenterLong = useMemo(() => {
+        const azimuth = azimuthFromCenterToEpicenterIdx * 22.5
+        const lengthInDeg = lengthFactors[lengthBetweenCenterAndEpicenterIdx] * (finalSemiMajorAxis / 111319.9)
+
+        return finalCenterLong + lengthInDeg * cos(azimuth)
+    }
+    , [finalCenterLong, finalSemiMajorAxis, lengthBetweenCenterAndEpicenterIdx, azimuthFromCenterToEpicenterIdx])
+
 
     useEffect(() => {
         const country = getCountryFromBin(countryBin)
@@ -515,12 +532,17 @@ export function EllipseSelect({ form }: { form: UseFormReturn<IFormInput> }) {
                         opacity: 1,
                         weight: 2,
                     }}
-                >
+                lengthFactors>
                     <Popup>Second Ellipse</Popup>
                 </Ellipse>}
                 { specificSettings === 1 &&
                     <Marker position={[hazardCenterLat, hazardCenterLong]}>
                         <Popup>Center of Hazard</Popup>
+                    </Marker>
+                }
+                { hazardInfo === 'Earthquake' && 
+                    <Marker position={[epicenterLat, epicenterLong]}>
+                        <Popup>Earthquake Epicenter</Popup>
                     </Marker>
                 }
                 </>}
