@@ -1,30 +1,40 @@
-# React + TypeScript + Vite
+# QZSS Early Warning System (EWS) Message Generator
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A web application with intuitive interface for generating an EWS Message formatted in Common Alert Message Format (CAMF), 
+meant for broadcasting using QZSS L1S signal in the form of a 122-bit-wide binary string.
 
-Currently, two official plugins are available:
+## Background
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Global Navigation Satellite Systems (GNSS) is the term for all navigation satellite 
+systems, such as GPS, GLONASS, and QZSS. Aside for navigation, these systems are also 
+being used for other purposes such as Early Warning Systems. Using QZSS, 
+disaster information and instructions can be sent and broadcasted via 250-bit QZSS L1S 
+signal. However, there is a constraint on the amount of data that can be sent because
+other bits are for other use, limiting EWS messages to 122 bits.
 
-## Expanding the ESLint configuration
+This tool serves as an easy way to generate these binary messages by using a Map with search 
+functionalities (for getting the coordinates without having to manually convert to binary) and 
+ellipse and marker displays for the ellipse definition and other information.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## How to run on local machine
 
-- Configure the top-level `parserOptions` property like this:
+This web application uses the following technologies:
+- [ReactJS](https://react.dev/) as the front-end framework
+- [Leaflet](https://leafletjs.com/) for the Map, more specifically [React-Leaflet](https://react-leaflet.js.org/)
+- [TailwindCSS](https://tailwindcss.com/) for styling.
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+To run on your local machine,
+1. Install [NodeJS](https://nodejs.org/en)
+2. Clone the repository
+3. Navigate inside the directory of the repository using a terminal.
+4. Run `npm install` on the terminal to install dependencies
+5. Run `npm run dev` on the terminal to launch a development server
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+## Credits
+- Prof. Keiko Shimazu (Shimazu Lab, AIIT) - Used their Excel EWM generator as reference
+- Prof. Dinesh Manandhar - For his lecture on QZSS EWS Message 
+
+## Todo
+1. Finish the rest of quantitative or detailed information on hazards
+2. Create unit tests. 
+3. Make the web application mobile-friendly
