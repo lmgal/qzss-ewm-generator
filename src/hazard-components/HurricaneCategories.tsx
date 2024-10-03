@@ -1,4 +1,4 @@
-import { UseFormReturn } from "react-hook-form"
+import { useFormContext } from "react-hook-form"
 import { IFormInput } from "../interface"
 
 const categories = [
@@ -9,7 +9,9 @@ const categories = [
     'Category 5/5 Hurricane',
 ]
 
-export function HurricaneCategory({ form }: { form: UseFormReturn<IFormInput> }) {
+export function HurricaneCategory() {
+  const form = useFormContext<IFormInput>()
+
   return (
     <>
       <label>Hurricane Category</label>

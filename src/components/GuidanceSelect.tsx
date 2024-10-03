@@ -1,4 +1,4 @@
-import { UseFormReturn } from 'react-hook-form'
+import { useFormContext } from 'react-hook-form'
 import { IFormInput } from '../interface'
 import { getCountryFromBin } from './CountrySelect'
 import { useEffect, useState } from 'react'
@@ -421,7 +421,8 @@ for (const country in guidanceLibraries) {
     }
 }
         
-export const GuidanceSelect = ({ form }: { form: UseFormReturn<IFormInput> }) => {
+export const GuidanceSelect = () => {
+    const form = useFormContext<IFormInput>()
     const [watchLibSelection, watchCountry] = form.watch(['libSelection','country'])
     const watchLibrary = form.watch('customLibrary')
     const [libModalIsOpen, setLibModalIsOpen] = useState(false)

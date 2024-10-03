@@ -1,4 +1,4 @@
-import { UseFormReturn } from "react-hook-form"
+import { useFormContext } from "react-hook-form"
 import { IFormInput } from "../interface"
 
 const categories = [
@@ -9,7 +9,9 @@ const categories = [
   'Scale 2 and Intensity 2',
 ]
 
-export function TyphoonCategory({ form }: { form: UseFormReturn<IFormInput> }) {
+export function TyphoonCategory() {
+  const form = useFormContext<IFormInput>()
+  
   return (
     <>
       <label>Typhoon Category</label>

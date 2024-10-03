@@ -1,9 +1,9 @@
-import { UseFormReturn } from "react-hook-form"
+import { useFormContext } from "react-hook-form"
 import { IFormInput } from "../interface"
 import { useEffect } from "react"
 
-export function UTCSelect({ form }: { form: UseFormReturn<IFormInput> }) {
-    const { watch, setValue } = form
+export function UTCSelect() {
+    const { register, watch, setValue } = useFormContext<IFormInput>()
 
     const watchUTCSelects = watch(['hazardDay', 
         'hazardHour', 'hazardMinute', 'hazardIsAM', 'hazardIs24HourClock'])
@@ -25,7 +25,7 @@ export function UTCSelect({ form }: { form: UseFormReturn<IFormInput> }) {
 
     return (
         <div className="flex items-center gap-2">
-            <select {...form.register('hazardDay', {
+            <select {...register('hazardDay', {
                 valueAsNumber: true
             })}>
                 <option value={0}>Monday</option>
@@ -36,7 +36,7 @@ export function UTCSelect({ form }: { form: UseFormReturn<IFormInput> }) {
                 <option value={5}>Saturday</option>
                 <option value={6}>Sunday</option>
             </select>
-            <select {...form.register('hazardHour', {
+            <select {...register('hazardHour', {
                 valueAsNumber: true
             })}>
                 { watch24HourClock && <option value={0}>0</option> }
@@ -52,7 +52,7 @@ export function UTCSelect({ form }: { form: UseFormReturn<IFormInput> }) {
                     </option>
                 ))}
             </select>
-            <select {...form.register('hazardMinute', {
+            <select {...register('hazardMinute', {
                 valueAsNumber: true
             })}>
                 {[...Array(60).keys()].map((minute) => (
@@ -61,13 +61,13 @@ export function UTCSelect({ form }: { form: UseFormReturn<IFormInput> }) {
                     </option>
                 ))}
             </select>
-            { !watch24HourClock && <select {...form.register('hazardIsAM', {
+            { !watch24HourClock && <select {...register('hazardIsAM', {
                 valueAsNumber: true
             })}>
                 <option value={0}>AM</option>
                 <option value={1}>PM</option>
             </select> }
-            <input type="checkbox" {...form.register('hazardIs24HourClock', {
+            <input type="checkbox" {...register('hazardIs24HourClock', {
                 valueAsNumber: true
             })} />
             <p>24-hour clock</p>

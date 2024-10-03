@@ -1,4 +1,4 @@
-import { UseFormReturn } from "react-hook-form"
+import { useFormContext } from "react-hook-form"
 import { IFormInput } from "../interface"
 
 const windSpeeds = [
@@ -17,7 +17,9 @@ const windSpeeds = [
   'Beaufort 12. v > 118 km/h - Hurricane',
 ]
 
-export function WindSpeed({ form }: { form: UseFormReturn<IFormInput> }) {
+export function WindSpeed() {
+  const form = useFormContext<IFormInput>()
+
   return (
     <>
       <label>Wind Speed</label>

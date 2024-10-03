@@ -1,5 +1,5 @@
 import { IFormInput } from "../interface"
-import { UseFormReturn } from "react-hook-form"
+import { useFormContext } from "react-hook-form"
 
 const severities = [
     "Unknown",
@@ -8,7 +8,9 @@ const severities = [
     "Extreme - Extraordinary threat to life or property"
 ]
 
-export function SeveritySelect({ form }: { form: UseFormReturn<IFormInput> }) {
+export function SeveritySelect() {
+    const form = useFormContext<IFormInput>()
+
     return (
         <select {...form.register('hazardSeverity', {
             valueAsNumber: true

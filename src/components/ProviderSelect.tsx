@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { UseFormReturn, useFieldArray } from "react-hook-form"
+import { useFormContext, useFieldArray } from "react-hook-form"
 import { IFormInput } from "../interface"
 import Modal from 'react-modal'
 
@@ -42,7 +42,8 @@ const defaultProviders : { [key: string] : Array<{
     ],
 }
 
-export function ProviderSelect({ form }: { form: UseFormReturn<IFormInput> }) {
+export function ProviderSelect() {
+    const form = useFormContext<IFormInput>()
     const { fields: providers, append, remove } = useFieldArray({
         control: form.control,
         name: "providers",

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { FormProvider, useForm } from 'react-hook-form'
 import { CountrySelect } from './components/CountrySelect'
 import { IFormInput } from './interface'
 import Modal from 'react-modal'
@@ -25,7 +25,7 @@ function App() {
   const [binaryString, setBinaryString] = useState<string>('')
   const form = useForm<IFormInput>({
     defaultValues: {
-      providers: [{ name: ''}],
+      providers: [{ name: '' }],
       customLibrary: guidanceLibraries['International'],
       centerLatIdx: 0,
       centerLongIdx: 0,
@@ -46,7 +46,7 @@ function App() {
 
   const handleSubmit = (data: IFormInput) => {
     let binary = ''
-    binary += intToBin(data.type, 2) 
+    binary += intToBin(data.type, 2)
     binary += intToBin(data.country, 9)
     binary += intToBin(data.providerId, 5)
     binary += intToBin(data.hazardTypeCategory, 7)
@@ -153,7 +153,7 @@ function App() {
         semiMajorAxisX: 0,
         semiMinorAxisX: 0,
       })
-    } 
+    }
 
     if (specificSettings !== 1) {
       // Reset the values of the hazard center
@@ -166,8 +166,8 @@ function App() {
       // Set marker to center
       form.reset({
         ...form.getValues(),
-        hazardCenterDeltaLatIdx: 2**6,
-        hazardCenterDeltaLongIdx: 2**6,
+        hazardCenterDeltaLatIdx: 2 ** 6,
+        hazardCenterDeltaLongIdx: 2 ** 6,
       })
     }
 
@@ -180,7 +180,7 @@ function App() {
         rotationAngle: 0,
       })
     }
-    
+
     if (specificSettings !== 3) {
       // Reset the values of the hazard info
       form.reset({
@@ -193,94 +193,96 @@ function App() {
   return (
     <div className={`w-full h-full flex justify-center bg-gradient-to-br from-purple-700 to-amber-700`}>
       <div className='grid grid-cols-[max-content_1fr] gap-3 bg-white p-8 rounded-lg my-16 items-center'>
-        <h1 className='text-2xl font-bold col-span-2'>QZSS EWS Message Generator</h1>
-        <h2 className='text-lg font-bold'>Type</h2>
-        <select {...form.register('type', {
-          valueAsNumber: true
-        })}>
-          <option value={0}>Test</option>
-          <option value={1}>Alert</option>
-          <option value={2}>Update</option>
-          <option value={3}>All Clear</option>
-        </select>
-        <h2 className='text-lg font-bold'>Country</h2>
-        <CountrySelect form={form} />
-        <h2 className='text-lg font-bold'>Provider</h2>
-        <ProviderSelect form={form} />
-        <h2 className='text-lg font-bold col-span-2'>Hazard</h2>
-        <h2 className='text-lg'>Category and Type</h2>
-        <HazardSelect form={form} />
-        <h2 className='text-lg'>Severity</h2>
-        <SeveritySelect form={form} />
-        <h2 className='text-lg'>Week</h2>
-        <select {...form.register('hazardWeek', {
-          valueAsNumber: true
-        })}>
-          <option value={0}>Current Week</option>
-          <option value={1}>Next Week</option>
-        </select>
-        <h2 className='text-lg'>UTC Time</h2>
-        <UTCSelect form={form} />
-        <h2 className='text-lg'>Expected Duration (hours)</h2>
-        <select {...form.register('hazardExpectedDuration', {
-          valueAsNumber: true
-        })}>
-          <option value={0}>Unknown</option>
-          <option value={1}>Duration &lt; 6</option>
-          <option value={2}>6 &le; Duration &lt; 12</option>
-          <option value={3}>12 &le; Duration &lt; 24</option>
-        </select>
-        <h2 className='text-lg font-bold col-span-2'>Guidance</h2>
-        <h2 className='text-lg'>Library</h2>
-        <select {...form.register('libSelection', {
-          valueAsNumber: true
-        })}>
+        <FormProvider {...form}>
+          <h1 className='text-2xl font-bold col-span-2'>QZSS EWS Message Generator</h1>
+          <h2 className='text-lg font-bold'>Type</h2>
+          <select {...form.register('type', {
+            valueAsNumber: true
+          })}>
+            <option value={0}>Test</option>
+            <option value={1}>Alert</option>
+            <option value={2}>Update</option>
+            <option value={3}>All Clear</option>
+          </select>
+          <h2 className='text-lg font-bold'>Country</h2>
+          <CountrySelect />
+          <h2 className='text-lg font-bold'>Provider</h2>
+          <ProviderSelect />
+          <h2 className='text-lg font-bold col-span-2'>Hazard</h2>
+          <h2 className='text-lg'>Category and Type</h2>
+          <HazardSelect />
+          <h2 className='text-lg'>Severity</h2>
+          <SeveritySelect />
+          <h2 className='text-lg'>Week</h2>
+          <select {...form.register('hazardWeek', {
+            valueAsNumber: true
+          })}>
+            <option value={0}>Current Week</option>
+            <option value={1}>Next Week</option>
+          </select>
+          <h2 className='text-lg'>UTC Time</h2>
+          <UTCSelect />
+          <h2 className='text-lg'>Expected Duration (hours)</h2>
+          <select {...form.register('hazardExpectedDuration', {
+            valueAsNumber: true
+          })}>
+            <option value={0}>Unknown</option>
+            <option value={1}>Duration &lt; 6</option>
+            <option value={2}>6 &le; Duration &lt; 12</option>
+            <option value={3}>12 &le; Duration &lt; 24</option>
+          </select>
+          <h2 className='text-lg font-bold col-span-2'>Guidance</h2>
+          <h2 className='text-lg'>Library</h2>
+          <select {...form.register('libSelection', {
+            valueAsNumber: true
+          })}>
             <option value={0}>International Guidance Library</option>
             <option value={1}>Country/Region Guidance Library</option>
-        </select>
-        <h2 className='text-lg'>Version</h2>
-        <select {...form.register('libVersion', {
-          valueAsNumber: true
-        })}>
+          </select>
+          <h2 className='text-lg'>Version</h2>
+          <select {...form.register('libVersion', {
+            valueAsNumber: true
+          })}>
             {[...Array(8).keys()].map((version) => (
-                <option key={version} value={version}>
-                    #{version + 1}
-                </option>
+              <option key={version} value={version}>
+                #{version + 1}
+              </option>
             ))}
-        </select>
-        <h2 className='text-lg'>Instructions</h2>
-        <GuidanceSelect form={form} />
-        <h2 className='text-xl font-bold col-span-2'>Ellipse Definition</h2>
-        <EllipseSelect form={form} />
-        <h2 className='text-lg font-bold'>Specific Settings</h2>
-        <select {...form.register('specificSettings', {
-          valueAsNumber: true
-        })}>
+          </select>
+          <h2 className='text-lg'>Instructions</h2>
+          <GuidanceSelect />
+          <h2 className='text-xl font-bold col-span-2'>Ellipse Definition</h2>
+          <EllipseSelect />
+          <h2 className='text-lg font-bold'>Specific Settings</h2>
+          <select {...form.register('specificSettings', {
+            valueAsNumber: true
+          })}>
             <option value={0}>Improved Resolution of Main Ellipse</option>
             <option value={1}>Position of Center of Hazard</option>
             <option value={2}>Second Ellipse Definition</option>
             <option value={3}>Quantitative or Detailed Information related to Hazard Category</option>
-        </select>
-        { specificSettings === 0 && <ImprovedResolution form={form} />}
-        { specificSettings === 1 && <HazardCenter form={form} /> }
-        { specificSettings === 2 && <SecondEllipse form={form} /> }
-        { specificSettings === 3 && <HazardInfo form={form} /> }
-        <button 
-          className='bg-blue-500 text-white rounded-lg p-2 col-span-2'
-          onClick={form.handleSubmit(handleSubmit)}
-        >
-          Generate
-        </button>
-        { binaryString !== '' && (
-          <div className='col-span-2'>
-            <h2 className='text-lg font-bold'>Binary String</h2>
-            <textarea 
-              className='w-full h-32 p-2 resize-none'
-              readOnly
-              value={binaryString} 
-            />
-          </div>
-        )}
+          </select>
+          {specificSettings === 0 && <ImprovedResolution />}
+          {specificSettings === 1 && <HazardCenter />}
+          {specificSettings === 2 && <SecondEllipse />}
+          {specificSettings === 3 && <HazardInfo />}
+          <button
+            className='bg-blue-500 text-white rounded-lg p-2 col-span-2'
+            onClick={form.handleSubmit(handleSubmit)}
+          >
+            Generate
+          </button>
+          {binaryString !== '' && (
+            <div className='col-span-2'>
+              <h2 className='text-lg font-bold'>Binary String</h2>
+              <textarea
+                className='w-full h-32 p-2 resize-none'
+                readOnly
+                value={binaryString}
+              />
+            </div>
+          )}
+        </FormProvider>
       </div>
     </div>
   )

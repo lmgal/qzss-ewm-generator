@@ -1,4 +1,4 @@
-import { UseFormReturn } from "react-hook-form"
+import { useFormContext } from "react-hook-form"
 import { IFormInput } from "../interface"
 
 const categories = [
@@ -10,7 +10,9 @@ const categories = [
   'Category 5 - Catastrophic damage will occur. Scale 3 and Intensity 3',
 ]
 
-export function DamageCategory({ form }: { form: UseFormReturn<IFormInput> }) {
+export function DamageCategory() {
+  const form = useFormContext<IFormInput>()
+
   return (
     <>
       <label>Damage Category</label>

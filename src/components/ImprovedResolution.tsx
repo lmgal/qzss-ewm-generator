@@ -1,4 +1,4 @@
-import { UseFormReturn } from "react-hook-form"
+import { useFormContext } from "react-hook-form"
 import { IFormInput } from "../interface"
 import { useMemo } from "react"
 import { radii, centerLatInt, centerLongInt } from "../constants"
@@ -6,7 +6,8 @@ import { radii, centerLatInt, centerLongInt } from "../constants"
 const refinedLatInt = centerLatInt / 8
 const refinedLongInt = centerLongInt / 8
 
-export function ImprovedResolution({ form }: { form: UseFormReturn<IFormInput> }) {
+export function ImprovedResolution() {
+    const form = useFormContext<IFormInput>()
     const [
         refinedCenterLatIdx,
         refinedCenterLongIdx,

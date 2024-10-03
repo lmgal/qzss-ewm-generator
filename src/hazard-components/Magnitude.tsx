@@ -1,4 +1,4 @@
-import { UseFormReturn } from "react-hook-form"
+import { useFormContext } from "react-hook-form"
 import { IFormInput } from "../interface"
 
 const magnitudes = [
@@ -13,7 +13,9 @@ const magnitudes = [
   { magnitude: '9.0 and greater', description: 'Great' },
 ]
 
-export function Magnitude({ form }: { form: UseFormReturn<IFormInput> }) {
+export function Magnitude() {
+  const form = useFormContext<IFormInput>()
+  
   return (
     <>
       <label>Magnitude</label>

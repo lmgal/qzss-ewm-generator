@@ -1,4 +1,4 @@
-import { UseFormReturn } from "react-hook-form"
+import { useFormContext } from "react-hook-form"
 import { IFormInput } from "../interface"
 
 import { Magnitude } from "../hazard-components/Magnitude"
@@ -14,62 +14,63 @@ import { TornadoProbability } from "../hazard-components/TornadoProbability"
 import { DamageCategory } from "../hazard-components/DamageCategory"
 import { LightningIntensity } from "../hazard-components/LightningIntensity"
 
-export function HazardInfo({ form }: { form: UseFormReturn<IFormInput> }) {
+export function HazardInfo() {
+  const form = useFormContext<IFormInput>()
   const hazardInfo = form.watch('hazardInfo')  
 
   let hazardInfoOptions = <></>
   if (hazardInfo === 'Earthquake') 
     hazardInfoOptions = (
         <>
-            <Magnitude form={form} />
-            <SeismicCoefficient form={form} />
-            <CenterToEpicenter form={form} />
+            <Magnitude />
+            <SeismicCoefficient />
+            <CenterToEpicenter />
         </>
     ) 
   if (hazardInfo === 'Tsunami')
     hazardInfoOptions = (
-        <WaveHeight form={form} />
+        <WaveHeight />
     )
 
   else if (hazardInfo === 'Cold Wave')
     hazardInfoOptions = (
-        <TemperatureRange form={form} />
+        <TemperatureRange />
     )
 
   else if (hazardInfo === 'Tropical Cyclone (Hurricane)')
     hazardInfoOptions = (
         <>
-            <HurricaneCategory form={form} />
-            <WindSpeed form={form} />
-            <RainfallAmount form={form} />
+            <HurricaneCategory />
+            <WindSpeed />
+            <RainfallAmount />
         </>
     )
 
   else if (hazardInfo === 'Tropical Cyclone (Typhoon)')
     hazardInfoOptions = (
         <>
-            <TyphoonCategory form={form} />
-            <WindSpeed form={form} />
-            <RainfallAmount form={form} />
+            <TyphoonCategory />
+            <WindSpeed />
+            <RainfallAmount />
         </>
     )
 
   else if (hazardInfo === 'Tornado')
     hazardInfoOptions = (
         <>
-            <WindSpeed form={form} />
-            <RainfallAmount form={form} />
-            <TornadoProbability form={form} />
+            <WindSpeed />
+            <RainfallAmount />
+            <TornadoProbability />
         </>
     )
 
   else if (hazardInfo === 'Storm or Thunderstorm')
     hazardInfoOptions = (
         <>
-            <WindSpeed form={form} />
-            <RainfallAmount form={form} />
-            <DamageCategory form={form} />
-            <LightningIntensity form={form} />
+            <WindSpeed />
+            <RainfallAmount />
+            <DamageCategory />
+            <LightningIntensity />
         </>
     )
 

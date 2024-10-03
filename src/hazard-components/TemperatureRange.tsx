@@ -1,4 +1,4 @@
-import { UseFormReturn } from "react-hook-form"
+import { useFormContext } from "react-hook-form"
 import { IFormInput } from "../interface"
 
 const temperatures = [
@@ -20,7 +20,9 @@ const temperatures = [
   'T > 45'
 ]
 
-export function TemperatureRange({ form }: { form: UseFormReturn<IFormInput> }) {
+export function TemperatureRange() {
+  const form = useFormContext<IFormInput>()
+  
   return (
     <>
       <label>Temperature Range</label>

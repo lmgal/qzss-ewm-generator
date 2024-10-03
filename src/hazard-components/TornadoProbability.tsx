@@ -1,4 +1,4 @@
-import { UseFormReturn } from "react-hook-form"
+import { useFormContext } from "react-hook-form"
 import { IFormInput } from "../interface"
 
 const probabilities = [
@@ -10,7 +10,9 @@ const probabilities = [
   'Extreme',
 ]
 
-export function TornadoProbability({ form }: { form: UseFormReturn<IFormInput> }) {
+export function TornadoProbability() {
+  const form = useFormContext<IFormInput>()
+
   return (
     <>
       <label>Tornado Probability</label>

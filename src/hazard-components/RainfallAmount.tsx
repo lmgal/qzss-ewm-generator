@@ -1,4 +1,4 @@
-import { UseFormReturn } from "react-hook-form"
+import { useFormContext } from "react-hook-form"
 import { IFormInput } from "../interface"
 
 
@@ -13,7 +13,9 @@ const rainfalls = [
   '80 < p'
 ]
 
-export function RainfallAmount({ form }: { form: UseFormReturn<IFormInput> }) {
+export function RainfallAmount() {
+  const form = useFormContext<IFormInput>()
+
   return (
     <>
       <label>Rainfall Amount (mm/hour)</label>

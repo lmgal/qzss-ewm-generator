@@ -1,6 +1,6 @@
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet" 
 import Ellipse from "./Ellipse"
-import { UseFormReturn } from "react-hook-form"
+import { useFormContext } from "react-hook-form"
 import { IFormInput } from "../interface"
 import { useEffect, useMemo, useRef } from "react"
 import { getCountryFromBin } from "./CountrySelect"
@@ -266,7 +266,8 @@ const countryCapitalCoords: { [key: string]: [number, number] } = {
 const sin = (deg: number) : number => Math.sin(deg * Math.PI / 180)
 const cos = (deg: number) : number => Math.cos(deg * Math.PI / 180)
 
-export function EllipseSelect({ form }: { form: UseFormReturn<IFormInput> }) {
+export function EllipseSelect() {
+    const form = useFormContext<IFormInput>()
     const mapRef = useRef<Map>(null)
     const [
         countryBin,

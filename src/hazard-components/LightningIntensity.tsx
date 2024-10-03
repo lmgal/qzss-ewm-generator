@@ -1,4 +1,4 @@
-import { UseFormReturn } from "react-hook-form"
+import { useFormContext } from "react-hook-form"
 import { IFormInput } from "../interface"
 
 const intensities = [
@@ -10,7 +10,8 @@ const intensities = [
   { level: 'LAL 6', description: 'Dry lightning (same as LAL 3 but without rain). This type of lightning has the potential for extreme fire activity and is normally highlighted in fire weather forecasts with a Red Flag Warning.' },
 ]
 
-export function LightningIntensity({ form }: { form: UseFormReturn<IFormInput> }) {
+export function LightningIntensity() {
+  const form = useFormContext<IFormInput>()
   const intensityIdx = form.watch('lightningIntensity')
 
   return (

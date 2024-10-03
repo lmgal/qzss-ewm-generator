@@ -1,4 +1,4 @@
-import { UseFormReturn } from "react-hook-form"
+import { useFormContext } from "react-hook-form"
 import { IFormInput } from "../interface"
 
 const coefficients = [
@@ -12,7 +12,9 @@ const coefficients = [
   '7'
 ]
 
-export function SeismicCoefficient({ form }: { form: UseFormReturn<IFormInput> }) {
+export function SeismicCoefficient() {
+  const form = useFormContext<IFormInput>()
+
   return (
     <>
       <label>Seismic Coefficient</label>

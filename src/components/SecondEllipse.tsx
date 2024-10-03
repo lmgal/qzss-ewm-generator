@@ -1,4 +1,4 @@
-import { UseFormReturn } from "react-hook-form"
+import { useFormContext } from "react-hook-form"
 import { IFormInput } from "../interface"
 import ReactModal from "react-modal"
 import { useState } from "react"
@@ -138,7 +138,8 @@ const guidanceChoices = [
     },
 ]
 
-export function SecondEllipse({ form }: { form: UseFormReturn<IFormInput> }) {
+export function SecondEllipse() {
+    const form = useFormContext<IFormInput>()
     const [
         ellipseCenterShift,
         homotheticFactor,
@@ -195,7 +196,7 @@ export function SecondEllipse({ form }: { form: UseFormReturn<IFormInput> }) {
                 <h2 className="text-lg">
                     Guidance for Second Ellipse
                 </h2>
-                <select {...form.register('secondEllipseGuidanceIdx')}>
+                <select {...form.register('secondEllipseGuidanceIdx', { valueAsNumber: true })}>
                     {guidanceChoices.map(({ code }, idx) => (
                         <option key={idx} value={idx}>{code}</option>
                     ))}

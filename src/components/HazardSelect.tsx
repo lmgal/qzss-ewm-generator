@@ -1,4 +1,4 @@
-import { UseFormReturn } from "react-hook-form"
+import { useFormContext } from "react-hook-form"
 import { IFormInput } from "../interface"
 
 const hazards = [
@@ -132,7 +132,9 @@ const hazards = [
     "reserved",
 ]
 
-export function HazardSelect({ form }: { form: UseFormReturn<IFormInput> }) {
+export function HazardSelect() {
+    const form = useFormContext<IFormInput>()
+
     return (
         <select {...form.register('hazardTypeCategory', {
             valueAsNumber: true

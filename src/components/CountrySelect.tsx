@@ -1,4 +1,4 @@
-import { UseFormReturn } from 'react-hook-form'
+import { useFormContext } from 'react-hook-form'
 import { IFormInput } from '../interface'
 
 const countries = [
@@ -257,7 +257,9 @@ export function getCountryFromBin(country: number) {
     return countries[country]
 }
 
-export function CountrySelect({ form }: { form: UseFormReturn<IFormInput> }) {
+export function CountrySelect() {
+    const form = useFormContext<IFormInput>()
+
     return (
         <select {...form.register('country', {
             valueAsNumber: true
