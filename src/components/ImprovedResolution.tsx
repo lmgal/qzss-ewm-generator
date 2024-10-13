@@ -1,6 +1,5 @@
 import { useFormContext } from "react-hook-form"
 import { IFormInput } from "../interface"
-import { useMemo } from "react"
 import { radii, centerLatInt, centerLongInt } from "../constants"
 
 const refinedLatInt = centerLatInt / 8
@@ -28,27 +27,21 @@ export function ImprovedResolution() {
         'semiMinorAxisIdx',
     ])
 
-    const finalCenterLat = useMemo(() => 
-        centerLat + centerLatInt / 8 * refinedCenterLatIdx
-    , [centerLat, refinedCenterLatIdx])
+    const finalCenterLat = centerLat + centerLatInt / 8 * refinedCenterLatIdx
 
-    const finalCenterLong = useMemo(() => 
-        centerLong + centerLongInt / 8 * refinedCenterLongIdx
-    , [centerLong, refinedCenterLongIdx])
+    const finalCenterLong = centerLong + centerLongInt / 8 * refinedCenterLongIdx
 
-    const finalSemiMajorAxis = useMemo(() => 
+    const finalSemiMajorAxis = 
         semiMajorAxisIdx === 0 ? 
             radii[0] - semiMajorAxisX * radii[0] :
             radii[semiMajorAxisIdx] - semiMajorAxisX * 
             (radii[semiMajorAxisIdx] - radii[semiMajorAxisIdx - 1])
-    , [semiMajorAxisIdx, semiMajorAxisX])
 
-    const finalSemiMinorAxis = useMemo(() => 
+    const finalSemiMinorAxis = 
         semiMinorAxisIdx === 0 ? 
             radii[0] - semiMinorAxisX * radii[0] :
             radii[semiMinorAxisIdx] - semiMinorAxisX * 
             (radii[semiMinorAxisIdx] - radii[semiMinorAxisIdx - 1])
-    , [semiMinorAxisIdx, semiMinorAxisX])
 
     return (
         <div className="col-span-2 grid grid-cols-1 gap-1">

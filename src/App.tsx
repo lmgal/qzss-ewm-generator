@@ -192,7 +192,7 @@ function App() {
 
   return (
     <div className={`w-full h-full flex justify-center bg-gradient-to-br from-purple-700 to-amber-700`}>
-      <div className='grid grid-cols-[max-content_1fr] gap-3 bg-white p-8 rounded-lg my-16 items-center'>
+      <div className='grid grid-cols-[max-content_1fr] gap-3 bg-white p-8 rounded-lg my-16 items-center lg:max-w-4xl'>
         <FormProvider {...form}>
           <h1 className='text-2xl font-bold col-span-2'>QZSS EWS Message Generator</h1>
           <h2 className='text-lg font-bold'>Type</h2>

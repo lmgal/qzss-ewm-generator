@@ -13,68 +13,165 @@ import { TyphoonCategory } from "../hazard-components/TyphoonCategories"
 import { TornadoProbability } from "../hazard-components/TornadoProbability"
 import { DamageCategory } from "../hazard-components/DamageCategory"
 import { LightningIntensity } from "../hazard-components/LightningIntensity"
+import { useMemo } from "react"
+import { HailScale } from "../hazard-components/HailIntensity"
+import { Visibility } from "../hazard-components/Visibility"
+import { SnowDepth } from "../hazard-components/SnowDepth"
+import { FloodCategory } from "../hazard-components/FloodSeverity"
+import { FogLevel } from "../hazard-components/FogLevel"
+import { DroughtLevel } from "../hazard-components/DroughtLevel"
+import { AvalanceRiskLevel } from "../hazard-components/AvalancheRisk"
+import { AshfallAmount } from "../hazard-components/AshfallAmountImpact"
+import { GeoMagneticScale } from "../hazard-components/GeomagneticScale"
+import { TerrorismThreatLevel } from "../hazard-components/TerrorismThreat"
+import { FireRiskLevel } from "../hazard-components/FireRiskLevel"
 
 export function HazardInfo() {
   const form = useFormContext<IFormInput>()
   const hazardInfo = form.watch('hazardInfo')  
 
-  let hazardInfoOptions = <></>
-  if (hazardInfo === 'Earthquake') 
-    hazardInfoOptions = (
-        <>
-            <Magnitude />
-            <SeismicCoefficient />
-            <CenterToEpicenter />
-        </>
-    ) 
-  if (hazardInfo === 'Tsunami')
-    hazardInfoOptions = (
-        <WaveHeight />
-    )
-
-  else if (hazardInfo === 'Cold Wave')
-    hazardInfoOptions = (
-        <TemperatureRange />
-    )
-
-  else if (hazardInfo === 'Tropical Cyclone (Hurricane)')
-    hazardInfoOptions = (
-        <>
-            <HurricaneCategory />
-            <WindSpeed />
-            <RainfallAmount />
-        </>
-    )
-
-  else if (hazardInfo === 'Tropical Cyclone (Typhoon)')
-    hazardInfoOptions = (
-        <>
-            <TyphoonCategory />
-            <WindSpeed />
-            <RainfallAmount />
-        </>
-    )
-
-  else if (hazardInfo === 'Tornado')
-    hazardInfoOptions = (
-        <>
-            <WindSpeed />
-            <RainfallAmount />
-            <TornadoProbability />
-        </>
-    )
-
-  else if (hazardInfo === 'Storm or Thunderstorm')
-    hazardInfoOptions = (
-        <>
-            <WindSpeed />
-            <RainfallAmount />
-            <DamageCategory />
-            <LightningIntensity />
-        </>
-    )
-
+  const hazardInfoOptions = useMemo(() => {
+    if (hazardInfo === 'Earthquake') 
+      return (
+          <>
+              <Magnitude />
+              <SeismicCoefficient />
+              <CenterToEpicenter />
+          </>
+      ) 
+    if (hazardInfo === 'Tsunami')
+      return (
+          <WaveHeight />
+      )
   
+    if (hazardInfo === 'Cold Wave')
+      return (
+          <TemperatureRange />
+      )
+  
+    if (hazardInfo === 'Tropical Cyclone (Hurricane)')
+      return (
+          <>
+              <HurricaneCategory />
+              <WindSpeed />
+              <RainfallAmount />
+          </>
+      )
+  
+    if (hazardInfo === 'Tropical Cyclone (Typhoon)')
+      return (
+          <>
+              <TyphoonCategory />
+              <WindSpeed />
+              <RainfallAmount />
+          </>
+      )
+  
+    if (hazardInfo === 'Tornado')
+      return (
+          <>
+              <WindSpeed />
+              <RainfallAmount />
+              <TornadoProbability />
+          </>
+      )
+  
+    if (hazardInfo === 'Storm or Thunderstorm')
+      return (
+          <>
+              <WindSpeed />
+              <RainfallAmount />
+              <DamageCategory />
+              <LightningIntensity />
+          </>
+      )
+
+    if (hazardInfo === 'Hail')
+      return <HailScale />
+
+    if (hazardInfo === 'Rainfall')
+      return (
+          <>
+            <RainfallAmount />
+            <Visibility />
+          </>
+      )
+
+    if (hazardInfo === 'Snowfall')
+      return (
+        <>
+          <SnowDepth />
+          <Visibility />
+        </>
+      )
+
+    if (hazardInfo === 'Flood')
+      return <FloodCategory />
+
+    if (hazardInfo === 'Lightning')
+      return <LightningIntensity />
+
+    if (hazardInfo === 'Heat Wave')
+      return <TemperatureRange />
+
+    if (hazardInfo === 'Wind Chill/Frost')
+      return <>
+        <TemperatureRange />
+        <WindSpeed />
+      </>
+
+    if (hazardInfo === 'Derecho')
+      return <>
+        <WindSpeed />
+        <RainfallAmount />
+        <LightningIntensity />
+        <TornadoProbability />
+      </>
+
+    if (hazardInfo === 'Fog')
+      return <>
+        <FogLevel />
+        <Visibility />
+      </>
+
+    if (hazardInfo === 'Snow Storm/ Blizzard')
+      return <>
+        <Visibility />
+        <WindSpeed />
+      </>
+
+    if (hazardInfo === 'Drought')
+      return <DroughtLevel />
+
+    if (hazardInfo === 'Avalance Risk')
+      return <AvalanceRiskLevel />
+
+    if (hazardInfo === 'Tidal Wave')
+      return <WaveHeight />
+
+    if (hazardInfo === 'Ash Fall')
+      return <AshfallAmount />
+
+    if (hazardInfo === 'Wind/Wave/Storm Surge')
+      return <>
+        <WindSpeed />
+        <WaveHeight />
+      </>
+
+    if (hazardInfo === 'Geomagnetic or Solar Storm')
+      return <GeoMagneticScale />
+
+    if (hazardInfo === 'Terrorism')
+      return <TerrorismThreatLevel />
+
+    if (hazardInfo === 'Forest Fire')
+      return <FireRiskLevel />
+
+    if (hazardInfo === 'Risk of Fire')
+      return <FireRiskLevel />
+
+    return <></>
+  }, [hazardInfo])
 
   return (
     <div className="col-span-2 grid grid-cols-[max-content_1fr] items-center gap-1 gap-y-2">
@@ -103,6 +200,7 @@ export function HazardInfo() {
         <option>Drought</option>
         <option>Avalance Risk</option>
         <option>Tidal Wave</option>
+        <option>Ash Fall</option>
         <option>Wind/Wave/Storm Surge</option>
         <option>Geomagnetic or Solar Storm</option>
         <option>Terrorism</option>

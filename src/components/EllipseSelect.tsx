@@ -2,7 +2,7 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet"
 import Ellipse from "./Ellipse"
 import { useFormContext } from "react-hook-form"
 import { IFormInput } from "../interface"
-import { useEffect, useMemo, useRef } from "react"
+import { useEffect, useRef } from "react"
 import { getCountryFromBin } from "./CountrySelect"
 import { GeoSearch } from "./GeoSearch"
 import { minRadius, maxRadius, radii, centerLatInt, centerLongInt, lengthFactors } from "../constants"
@@ -340,79 +340,54 @@ export function EllipseSelect() {
     }, [azimuthAngleIdx])
 
     // Calculate the final ellipse definition, including the improved resolution
-    const finalCenterLat = useMemo(() => 
-        centerLat + centerLatInt / 8 * refinedCenterLatIdx
-    , [centerLat, refinedCenterLatIdx])
+    const finalCenterLat = centerLat + centerLatInt / 8 * refinedCenterLatIdx
 
-    const finalCenterLong = useMemo(() => 
-        centerLong + centerLongInt / 8 * refinedCenterLongIdx
-    , [centerLong, refinedCenterLongIdx])
+    const finalCenterLong = centerLong + centerLongInt / 8 * refinedCenterLongIdx
 
-    const finalSemiMajorAxis = useMemo(() => 
-        semiMajorAxisIdx === 0 ? 
-            radii[0] - semiMajorAxisX * radii[0] :
-            radii[semiMajorAxisIdx] - semiMajorAxisX * 
-            (radii[semiMajorAxisIdx] - radii[semiMajorAxisIdx - 1])
-    , [semiMajorAxisIdx, semiMajorAxisX])
+    const finalSemiMajorAxis = semiMajorAxisIdx === 0 ? radii[0] - semiMajorAxisX * radii[0] : 
+      radii[semiMajorAxisIdx] - semiMajorAxisX * (radii[semiMajorAxisIdx] - radii[semiMajorAxisIdx - 1])
 
-    const finalSemiMinorAxis = useMemo(() => 
-        semiMinorAxisIdx === 0 ? 
-            radii[0] - semiMinorAxisX * radii[0] :
-            radii[semiMinorAxisIdx] - semiMinorAxisX * 
-            (radii[semiMinorAxisIdx] - radii[semiMinorAxisIdx - 1])
-    , [semiMinorAxisIdx, semiMinorAxisX])
-
+    const finalSemiMinorAxis = semiMinorAxisIdx === 0 ? radii[0] - semiMinorAxisX * radii[0] :
+        radii[semiMinorAxisIdx] - semiMinorAxisX * (radii[semiMinorAxisIdx] - radii[semiMinorAxisIdx -1])
 
     // Calculate the hazard center
-    const hazardCenterLat = useMemo(() =>
-        finalCenterLat + ( hazardCenterDeltaLatIdx >= 2 ** 6 ? 
+    const hazardCenterLat = finalCenterLat + ( hazardCenterDeltaLatIdx >= 2 ** 6 ? 
         (hazardCenterDeltaLatIdx + 1) * hazardCenterStep - 10 :
         hazardCenterDeltaLatIdx * hazardCenterStep - 10 )
-    , [finalCenterLat, hazardCenterDeltaLatIdx])
 
-    const hazardCenterLong = useMemo(() =>
-        finalCenterLong + ( hazardCenterDeltaLongIdx >= 2 ** 6 ?
+    const hazardCenterLong = finalCenterLong + ( hazardCenterDeltaLongIdx >= 2 ** 6 ?
         (hazardCenterDeltaLongIdx + 1) * hazardCenterStep - 10 :
         hazardCenterDeltaLongIdx * hazardCenterStep - 10 )
-    , [finalCenterLong, hazardCenterDeltaLongIdx])
 
 
     // Calculate the second ellipse definition
-    const secondEllipseCenterLat = useMemo(() => 
+    const secondEllipseCenterLat = 
         finalCenterLat + (ellipseCenterShift * sin(rotationAngle * 11.25 + azimuthAngle) *
             finalSemiMajorAxis / 111319.9)
-    , [finalCenterLat, ellipseCenterShift, rotationAngle, finalSemiMajorAxis, azimuthAngle])
 
-    const secondEllipseCenterLong = useMemo(() =>
+    const secondEllipseCenterLong = 
         finalCenterLong + (ellipseCenterShift * cos(rotationAngle * 11.25 + azimuthAngle) *
             finalSemiMajorAxis / 111319.9)
-    , [finalCenterLong, ellipseCenterShift, rotationAngle, finalSemiMajorAxis, azimuthAngle])
 
-    const secondEllipseSemiMajorAxis = useMemo(() =>
-        finalSemiMajorAxis * (0.25 * homotheticFactor + 0.25)
-    , [finalSemiMajorAxis, homotheticFactor])
+    const secondEllipseSemiMajorAxis = finalSemiMajorAxis * (0.25 * homotheticFactor + 0.25)
 
-    const secondEllipseSemiMinorAxis = useMemo(() =>
-        finalSemiMinorAxis * (0.25 * homotheticFactor + 0.25)
-    , [finalSemiMinorAxis, homotheticFactor])
+    const secondEllipseSemiMinorAxis = finalSemiMinorAxis * (0.25 * homotheticFactor + 0.25)
 
 
     // Calculate the Earthquake epicenter
-    const epicenterLat = useMemo(() => {
-        const azimuth = azimuthFromCenterToEpicenterIdx * 22.5
-        const lengthInDeg = lengthFactors[lengthBetweenCenterAndEpicenterIdx] * (finalSemiMajorAxis / 111319.9)
+    const epicenterLat = (() => {
+      const azimuth = azimuthFromCenterToEpicenterIdx * 22.5
+      const lengthInDeg = lengthFactors[lengthBetweenCenterAndEpicenterIdx] * (finalSemiMajorAxis / 111319.9)
 
-        return finalCenterLat + lengthInDeg * sin(azimuth)
-    }
-    , [finalCenterLat, finalSemiMajorAxis, lengthBetweenCenterAndEpicenterIdx, azimuthFromCenterToEpicenterIdx])
+      return finalCenterLat + lengthInDeg * sin(azimuth)
+    })()
 
-    const epicenterLong = useMemo(() => {
+    const epicenterLong =(() => {
         const azimuth = azimuthFromCenterToEpicenterIdx * 22.5
         const lengthInDeg = lengthFactors[lengthBetweenCenterAndEpicenterIdx] * (finalSemiMajorAxis / 111319.9)
 
         return finalCenterLong + lengthInDeg * cos(azimuth)
-    }
-    , [finalCenterLong, finalSemiMajorAxis, lengthBetweenCenterAndEpicenterIdx, azimuthFromCenterToEpicenterIdx])
+    })()
 
 
     useEffect(() => {
