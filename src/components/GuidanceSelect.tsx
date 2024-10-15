@@ -3,7 +3,7 @@ import { IFormInput } from '../interface'
 import { getCountryFromBin } from './CountrySelect'
 import { useEffect, useState } from 'react'
 import { useFieldArray } from 'react-hook-form'
-import Modal from 'react-modal'
+import Modal from 'react-responsive-modal'
 import { InstructsInput } from './InstructsInput'
 
 export const guidanceLibraries : { [key: string] : Array<{
@@ -452,7 +452,7 @@ export const GuidanceSelect = () => {
     }>) => lists.reduce((sum, list) => sum + list.bits, 0)
 
     return (
-        <div className='flex gap-1'>
+        <div className='grid lg:flex gap-1'>
             {
                 watchLibrary.map((list, i) => (
                     <select key={i} {...form.register(`libActions.${i}`, {
@@ -467,24 +467,16 @@ export const GuidanceSelect = () => {
                 ))
             }
             <Modal
-                isOpen={libModalIsOpen}
-                onRequestClose={() => {
+                open={libModalIsOpen}
+                onClose={() => {
                     setLibModalIsOpen(false)
                     form.setValue('modalOpen', false)
                 }}
             >
-                <div className='flex justify-between'>
-                    <div>
-                        <h2 className='text-xl font-bold'>Guidance Library</h2>
-                        <button className='text-xl' onClick={() => setIsLibEdit(!isLibEdit)}>
-                            { !isLibEdit ? 'Edit' : 'Save' }
-                        </button>
-                    </div>
-                    <button onClick={() => {
-                        setLibModalIsOpen(false)
-                        form.setValue('modalOpen', false)
-                    }}>
-                        Close
+                <div>
+                    <h2 className='text-xl font-bold'>Guidance Library</h2>
+                    <button className='text-xl' onClick={() => setIsLibEdit(!isLibEdit)}>
+                        { !isLibEdit ? 'Edit' : 'Save' }
                     </button>
                 </div>
                 <div className='flex gap-5'>
@@ -501,16 +493,18 @@ export const GuidanceSelect = () => {
                             </ul>
                         </div>
                     )) :
-                    <div className='grid gap-10 w-9/12'>
+                    <div className='grid gap-10'>
                     {
                         lists.map((list, i) => (
                             <div key={list.id} className='grid gap-2'>
-                                <div className='flex gap-2'>
+                                <div className='grid grid-cols-5 lg:flex gap-2'>
                                     <input
+                                        className='col-span-3'
                                         {...form.register(`customLibrary.${i}.description`)}
                                         placeholder='Description'
                                     />
                                     <input
+                                        className='col-span-1'
                                         {...form.register(`customLibrary.${i}.bits`, {
                                             valueAsNumber: true,
                                             validate: (_, formValues) => {
@@ -526,9 +520,9 @@ export const GuidanceSelect = () => {
                                     <button 
                                         type='button' 
                                         onClick={() => removeList(i)}
-                                        className='py-2 px-4 rounded border border-gray-500'
+                                        className='py-2 px-4 rounded border border-gray-500 col-span-1'
                                     >
-                                        Remove
+                                        &#10060;
                                     </button>
                                 </div>
                                 <InstructsInput form={form} i={i} />

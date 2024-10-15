@@ -15,8 +15,8 @@ export function TornadoProbability() {
 
   return (
     <>
-      <label>Tornado Probability</label>
-      <select {...form.register('tornadoProbability', {
+      <label className="col-span-2 md:col-span-1">Tornado Probability</label>
+      <select className="col-span-2 md:col-span-1" {...form.register('tornadoProbability', {
         valueAsNumber: true
       })}>
         { probabilities.map((probability, i) => (

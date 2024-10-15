@@ -35,8 +35,8 @@ export function DroughtLevel() {
 
   return (
     <>
-      <label>Drought Level</label>
-      <select {...form.register('droughtLevel', {
+      <label className="col-span-2 md:col-span-1">Drought Level</label>
+      <select className="col-span-2 md:col-span-1" {...form.register('droughtLevel', {
         valueAsNumber: true
       })}>
         { droughtLevels.map((droughtLevel, i) => (

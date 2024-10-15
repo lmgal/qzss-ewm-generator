@@ -18,8 +18,8 @@ export function Magnitude() {
   
   return (
     <>
-      <label>Magnitude</label>
-      <select {...form.register('magnitude', {
+      <label className="col-span-2 md:col-span-1">Magnitude</label>
+      <select className="col-span-2 md:col-span-1" {...form.register('magnitude', {
         valueAsNumber: true
       })}>
         {magnitudes.map((magnitude, i) => (

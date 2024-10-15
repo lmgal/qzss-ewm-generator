@@ -15,8 +15,8 @@ export function DamageCategory() {
 
   return (
     <>
-      <label>Damage Category</label>
-      <select {...form.register('damageCategory', {
+      <label className="col-span-2 md:col-span-1">Damage Category</label>
+      <select className="col-span-2 md:col-span-1" {...form.register('damageCategory', {
         valueAsNumber: true
       })}>
         { categories.map((category, i) => (

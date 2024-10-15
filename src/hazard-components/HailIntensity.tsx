@@ -35,8 +35,8 @@ export function HailScale() {
 
   return (
     <>
-      <label>Hail Scale</label>
-      <select {...form.register('hailScale', {
+      <label className="col-span-2 md:col-span-1">Hail Scale</label>
+      <select className="col-span-2 md:col-span-1" {...form.register('hailScale', {
         valueAsNumber: true
       })}>
         { hailScales.map((hailScale, i) => (

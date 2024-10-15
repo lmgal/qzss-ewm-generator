@@ -24,8 +24,8 @@ export function LightningIntensity() {
 
   return (
     <>
-      <label>Lightning Intensity</label>
-      <select {...form.register('lightningIntensity', {
+      <label className="col-span-2 md:col-span-1">Lightning Intensity</label>
+      <select className="col-span-2 md:col-span-1" {...form.register('lightningIntensity', {
         valueAsNumber: true
       })}>
         {levels.map((level, i) => (

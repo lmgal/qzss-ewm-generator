@@ -42,8 +42,8 @@ export function SnowDepth() {
 
   return (
     <>
-      <label>Snow Depth</label>
-      <select {...form.register('snowDepth', {
+      <label className="col-span-2 md:col-span-1">Snow Depth</label>
+      <select className="col-span-2 md:col-span-1" {...form.register('snowDepth', {
         valueAsNumber: true
       })}>
         { snowDepths.map((snowDepth, i) => (

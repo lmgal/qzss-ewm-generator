@@ -14,8 +14,8 @@ export function HurricaneCategory() {
 
   return (
     <>
-      <label>Hurricane Category</label>
-      <select {...form.register('hurricaneCategory', {
+      <label className="col-span-2 md:col-span-1">Hurricane Category</label>
+      <select className="col-span-2 md:col-span-1" {...form.register('hurricaneCategory', {
         valueAsNumber: true
       })}>
         { categories.map((category, i) => (

@@ -37,4 +37,3 @@ To run on your local machine,
 ## Todo
 1. Finish the rest of quantitative or detailed information on hazards
 2. Create unit tests. 
-3. Make the web application mobile-friendly

@@ -2,10 +2,10 @@ import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { CountrySelect } from './components/CountrySelect'
 import { IFormInput } from './interface'
-import Modal from 'react-modal'
 
 import 'leaflet/dist/leaflet.css'
 import 'leaflet-geosearch/dist/geosearch.css'
+import 'react-responsive-modal/styles.css'
 import { ProviderSelect } from './components/ProviderSelect'
 import { HazardSelect } from './components/HazardSelect'
 import { SeveritySelect } from './components/SeveritySelect'
@@ -18,8 +18,6 @@ import { useEffect } from 'react'
 import { SecondEllipse } from './components/SecondEllipse'
 import { HazardInfo } from './components/HazardInfo'
 import { intToBin } from './utils'
-
-Modal.setAppElement('#root')
 
 function App() {
   const [binaryString, setBinaryString] = useState<string>('')
@@ -135,9 +133,138 @@ function App() {
         binary += intToBin(data.damageCategory, 3)
         binary += intToBin(data.lightningIntensity, 3)
         binary += '0'.repeat(2) // Reserved bits
+
+      } else if (data.hazardInfo === 'Hail') {
+        binary += intToBin(data.hailScale, 4)
+        binary += '0'.repeat(11) // Reserved bits
+
+      } else if (data.hazardInfo === 'Rainfall') {
+        binary += intToBin(data.rainfallAmount, 3)
+        binary += intToBin(data.visibility, 4)
+        binary += '0'.repeat(8) // Reserved bits
+
+      } else if (data.hazardInfo === 'Snowfall') {
+        binary += intToBin(data.snowDepth, 5)
+        binary += intToBin(data.visibility, 4)
+        binary += '0'.repeat(6) // Reserved bits
+
+      } else if (data.hazardInfo === 'Flood') {
+        binary += intToBin(data.floodSeverity, 2)
+        binary += '0'.repeat(13) // Reserved bits
+
+      } else if (data.hazardInfo === 'Lightning') {
+        binary += intToBin(data.lightningIntensity, 3)
+        binary += '0'.repeat(12) // Reserved bits
+      
+      } else if (data.hazardInfo === 'Heat Wave') {
+        binary += intToBin(data.temperatureRange, 4)
+        binary += '0'.repeat(11) // Reserved bits
+
+      } else if (data.hazardInfo === 'Wind Chill/Frost') {
+        binary += intToBin(data.windSpeed, 4)
+        binary += intToBin(data.temperatureRange, 4)
+        binary += '0'.repeat(7) // Reserved bits
+
+      } else if (data.hazardInfo === 'Derecho') {
+        binary += intToBin(data.windSpeed, 4)
+        binary += intToBin(data.rainfallAmount, 3)
+        binary += intToBin(data.lightningIntensity, 3)
+        binary += intToBin(data.tornadoProbability, 3)
+        binary += '0'.repeat(2) // Reserved bit
+
+      } else if (data.hazardInfo === 'Fog') {
+        binary += intToBin(data.fogLevel, 3)
+        binary += intToBin(data.visibility, 4)
+        binary += '0'.repeat(8) // Reserved bits
+
+      } else if (data.hazardInfo === 'Snow Storm/ Blizzard') {
+        binary += intToBin(data.visibility, 4)
+        binary += intToBin(data.windSpeed, 4)
+        binary += '0'.repeat(7) // Reserved bits
+
+      } else if (data.hazardInfo === 'Drought') {
+        binary += intToBin(data.droughtLevel, 2)
+        binary += '0'.repeat(13) // Reserved bits
+
+      } else if (data.hazardInfo === 'Avalance Risk') {
+        binary += intToBin(data.avalanceWarningLevel, 3)
+        binary += '0'.repeat(12) // Reserved bits
+
+      } else if (data.hazardInfo === 'Tidal Wave') {
+        binary += intToBin(data.waveHeight, 3)
+        binary += '0'.repeat(12) // Reserved bits
+
+      } else if (data.hazardInfo === 'Ash Fall') {
+        binary += intToBin(data.ashFallAmount, 3)
+        binary += '0'.repeat(12) // Reserved bits
+
+      } else if (data.hazardInfo === 'Wind/Wave/Storm Surge') {
+        binary += intToBin(data.windSpeed, 4)
+        binary += intToBin(data.waveHeight, 3)
+        binary += '0'.repeat(8) // Reserved bits
+
+      } else if (data.hazardInfo === 'Geomagnetic or Solar Storm') {
+        binary += intToBin(data.geomagneticScale, 3)
+        binary += '0'.repeat(12) // Reserved bits
+
+      } else if (data.hazardInfo === 'Terrorism') {
+        binary += intToBin(data.terrorismThreatLevel, 3)
+        binary += '0'.repeat(12) // Reserved bits
+
+      } else if (data.hazardInfo === 'Forest Fire') {
+        binary += intToBin(data.fireRiskLevel, 3)
+        binary += '0'.repeat(12) // Reserved bits
+
+      } else if (data.hazardInfo === 'Risk of Fire') {
+        binary += intToBin(data.fireRiskLevel, 3)
+        binary += '0'.repeat(12) // Reserved bits
+
+      } else if (data.hazardInfo === 'Contaminated Drinking Water') {
+        binary += intToBin(data.waterQuality, 3)
+        binary += '0'.repeat(12) // Reserved bits
+
+      } else if (data.hazardInfo === 'UV Radiation') {
+        binary += intToBin(data.uvIndex, 4)
+        binary += '0'.repeat(11) // Reserved bits
+
+      } else if (data.hazardInfo === 'Risk of Infection') {
+        binary += intToBin(data.caseNumberPer100000, 5)
+        binary += intToBin(data.infectionType, 6)
+        binary += '0'.repeat(4)
+
+      } else if (data.hazardInfo === 'Pandemia') {
+        binary += intToBin(data.caseNumberPer100000, 5)
+        binary += intToBin(data.infectionType, 6)
+        binary += '0'.repeat(4)
+
+      } else if (data.hazardInfo === 'Gas Supply Outage') {
+        binary += intToBin(data.outageEstimatedDuration, 4)
+        binary += '0'.repeat(11)
+
+      } else if (data.hazardInfo === 'Outage of IT Systems') {
+        binary += intToBin(data.outageEstimatedDuration, 4)
+        binary += '0'.repeat(11)
+
+      } else if (data.hazardInfo === 'Power Outage') {
+        binary += intToBin(data.outageEstimatedDuration, 4)
+        binary += '0'.repeat(11)
+
+      } else if (data.hazardInfo === 'Emergency Number Outage') {
+        binary += intToBin(data.outageEstimatedDuration, 4)
+        binary += '0'.repeat(11)
+
+      } else if (data.hazardInfo === 'Telephone Line Outage') {
+        binary += intToBin(data.outageEstimatedDuration, 4)
+        binary += '0'.repeat(11)
+       
+      } else if (data.hazardInfo === 'Nuclear Power Station Accident') {
+        binary += intToBin(data.nuclearEventScale, 4)
+        binary += '0'.repeat(11)
+
       }
     }
 
+    console.assert(binary.length === 122, 'Binary string length is not 122 bits')
     setBinaryString(binary)
   }
 
@@ -192,10 +319,10 @@ function App() {
 
   return (
     <div className={`w-full h-full flex justify-center bg-gradient-to-br from-purple-700 to-amber-700`}>
-      <div className='grid grid-cols-[max-content_1fr] gap-3 bg-white p-8 rounded-lg my-16 items-center lg:max-w-4xl'>
+      <div className='grid grid-cols-[max-content_1fr] gap-3 bg-white p-8 rounded-lg md:my-16 items-center'>
         <FormProvider {...form}>
           <h1 className='text-2xl font-bold col-span-2'>QZSS EWS Message Generator</h1>
-          <h2 className='text-lg font-bold'>Type</h2>
+          <h2 className='text-lg font-bold col-span-2 md:col-span-1'>Type</h2>
           <select {...form.register('type', {
             valueAsNumber: true
           })}>
@@ -204,25 +331,25 @@ function App() {
             <option value={2}>Update</option>
             <option value={3}>All Clear</option>
           </select>
-          <h2 className='text-lg font-bold'>Country</h2>
+          <h2 className='text-lg font-bold col-span-2 md:col-span-1'>Country</h2>
           <CountrySelect />
-          <h2 className='text-lg font-bold'>Provider</h2>
+          <h2 className='text-lg font-bold col-span-2 md:col-span-1'>Provider</h2>
           <ProviderSelect />
           <h2 className='text-lg font-bold col-span-2'>Hazard</h2>
-          <h2 className='text-lg'>Category and Type</h2>
+          <h2 className='text-lg col-span-2 md:col-span-1'>Category and Type</h2>
           <HazardSelect />
-          <h2 className='text-lg'>Severity</h2>
+          <h2 className='text-lg col-span-2 md:col-span-1'>Severity</h2>
           <SeveritySelect />
-          <h2 className='text-lg'>Week</h2>
+          <h2 className='text-lg col-span-2 md:col-span-1'>Week</h2>
           <select {...form.register('hazardWeek', {
             valueAsNumber: true
           })}>
             <option value={0}>Current Week</option>
             <option value={1}>Next Week</option>
           </select>
-          <h2 className='text-lg'>UTC Time</h2>
+          <h2 className='text-lg col-span-2 md:col-span-1'>UTC Time</h2>
           <UTCSelect />
-          <h2 className='text-lg'>Expected Duration (hours)</h2>
+          <h2 className='text-lg col-span-2 md:col-span-1'>Expected Duration (hours)</h2>
           <select {...form.register('hazardExpectedDuration', {
             valueAsNumber: true
           })}>
@@ -232,14 +359,14 @@ function App() {
             <option value={3}>12 &le; Duration &lt; 24</option>
           </select>
           <h2 className='text-lg font-bold col-span-2'>Guidance</h2>
-          <h2 className='text-lg'>Library</h2>
+          <h2 className='text-lg col-span-2 md:col-span-1'>Library</h2>
           <select {...form.register('libSelection', {
             valueAsNumber: true
           })}>
             <option value={0}>International Guidance Library</option>
             <option value={1}>Country/Region Guidance Library</option>
           </select>
-          <h2 className='text-lg'>Version</h2>
+          <h2 className='text-lg col-span-2 md:col-span-1'>Version</h2>
           <select {...form.register('libVersion', {
             valueAsNumber: true
           })}>
@@ -249,11 +376,11 @@ function App() {
               </option>
             ))}
           </select>
-          <h2 className='text-lg'>Instructions</h2>
+          <h2 className='text-lg col-span-2 md:col-span-1'>Instructions</h2>
           <GuidanceSelect />
           <h2 className='text-xl font-bold col-span-2'>Ellipse Definition</h2>
           <EllipseSelect />
-          <h2 className='text-lg font-bold'>Specific Settings</h2>
+          <h2 className='text-lg font-bold col-span-2 md:col-span-1'>Specific Settings</h2>
           <select {...form.register('specificSettings', {
             valueAsNumber: true
           })}>

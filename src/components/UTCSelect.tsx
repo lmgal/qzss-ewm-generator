@@ -24,7 +24,7 @@ export function UTCSelect() {
     }, [watchUTCSelects])
 
     return (
-        <div className="flex items-center gap-2">
+        <div className="grid lg:flex items-center gap-2">
             <select {...register('hazardDay', {
                 valueAsNumber: true
             })}>
@@ -67,10 +67,12 @@ export function UTCSelect() {
                 <option value={0}>AM</option>
                 <option value={1}>PM</option>
             </select> }
-            <input type="checkbox" {...register('hazardIs24HourClock', {
-                valueAsNumber: true
-            })} />
-            <p>24-hour clock</p>
+            <div className="flex items-center gap-2">
+                <input type="checkbox" {...register('hazardIs24HourClock', {
+                    valueAsNumber: true
+                })} />
+                <p>24-hour clock</p>
+            </div>
         </div>
     )
 }

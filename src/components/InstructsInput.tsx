@@ -17,22 +17,23 @@ export function InstructsInput({ form, i } : {
     return (
         <div key={i} className="grid gap-3">
             {instructs.map((instruct, j) => (
-                <div key={instruct.id} className="flex gap-2">
+                <div key={instruct.id} className="grid grid-cols-7 lg:flex gap-2">
                     <input
+                        className="col-span-2"
                         placeholder="Code"
                         {...form.register(`customLibrary.${i}.instructs.${j}.code`)}
                     />
                     <textarea
-                        className={`min-w-full`}
+                        className="col-span-4"
                         placeholder="Detail"
                         {...form.register(`customLibrary.${i}.instructs.${j}.detail`)}
                     />
                     <button 
                         type="button" 
                         onClick={() => remove(j)}
-                        className="py-2 px-4 rounded border border-gray-500"
+                        className="py-2 px-4 rounded border border-gray-500 col-span-1 text-xs text-center"
                     >
-                        Remove
+                        &#10060;
                     </button>
                 </div>
             ))}

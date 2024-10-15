@@ -24,8 +24,8 @@ export function GeoMagneticScale() {
 
   return (
     <>
-      <label>Geomagnetic Scale</label>
-      <select {...form.register('geomagneticScale', {
+      <label className="col-span-2 md:col-span-1">Geomagnetic Scale</label>
+      <select className="col-span-2 md:col-span-1" {...form.register('geomagneticScale', {
         valueAsNumber: true
       })}>
         { geoMagneticScales.map((geomagneticScale, i) => (

@@ -1,4 +1,4 @@
-import { useFormContext } from "react-hook-form"
+import { useFormContext } from "react-hook-form" 
 import { IFormInput } from "../interface"
 
 const floodCategories = [
@@ -26,8 +26,8 @@ export function FloodCategory() {
 
   return (
     <>
-      <label>Flood Category</label>
-      <select {...form.register('floodSeverity', {
+      <label className="col-span-2 md:col-span-1">Flood Category</label>
+      <select className="col-span-2 md:col-span-1" {...form.register('floodSeverity', {
         valueAsNumber: true
       })}>
         { floodCategories.map((floodCategory, i) => (

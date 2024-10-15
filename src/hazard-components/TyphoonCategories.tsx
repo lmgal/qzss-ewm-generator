@@ -14,8 +14,8 @@ export function TyphoonCategory() {
   
   return (
     <>
-      <label>Typhoon Category</label>
-      <select {...form.register('typhoonCategory', {
+      <label className="col-span-2 md:col-span-1">Typhoon Category</label>
+      <select className="col-span-2 md:col-span-1" {...form.register('typhoonCategory', {
         valueAsNumber: true
       })}>
         { categories.map((category, i) => (

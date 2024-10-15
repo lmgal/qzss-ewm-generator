@@ -15,8 +15,8 @@ export function FireRiskLevel() {
 
   return (
     <>
-      <label>Fire Risk Level</label>
-      <select {...form.register('fireRiskLevel', {
+      <label className="col-span-2 md:col-span-1">Fire Risk Level</label>
+      <select className="col-span-2 md:col-span-1" {...form.register('fireRiskLevel', {
         valueAsNumber: true
       })}>
         { fireRiskLevels.map((fireRiskLevel, i) => (

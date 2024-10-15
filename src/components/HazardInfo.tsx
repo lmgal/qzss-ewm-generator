@@ -25,6 +25,12 @@ import { AshfallAmount } from "../hazard-components/AshfallAmountImpact"
 import { GeoMagneticScale } from "../hazard-components/GeomagneticScale"
 import { TerrorismThreatLevel } from "../hazard-components/TerrorismThreat"
 import { FireRiskLevel } from "../hazard-components/FireRiskLevel"
+import { WaterQuality } from "../hazard-components/WaterQuality"
+import { UVIndex } from "../hazard-components/UVIndex"
+import { NumberOfCases } from "../hazard-components/NumberOfCases"
+import { InfectionType } from "../hazard-components/InfectionType"
+import { OutageEstimatedDuration } from "../hazard-components/OutageEstimation"
+import { NuclearEventScale } from "../hazard-components/NuclearEventScale"
 
 export function HazardInfo() {
   const form = useFormContext<IFormInput>()
@@ -170,6 +176,33 @@ export function HazardInfo() {
     if (hazardInfo === 'Risk of Fire')
       return <FireRiskLevel />
 
+    if (hazardInfo === 'Contaminated Drinking Water')
+      return <WaterQuality />
+
+    if (hazardInfo === 'UV Radiation')
+      return <UVIndex />
+
+    if (hazardInfo === 'Risk of Infection')
+      return <>
+        <NumberOfCases />
+        <InfectionType />
+      </>
+  
+    if (hazardInfo === 'Gas Supply Outage')
+      return <OutageEstimatedDuration />
+
+    if (hazardInfo === 'Power Outage')
+      return <OutageEstimatedDuration />
+
+    if (hazardInfo === 'Emergency Number Outage')
+      return <OutageEstimatedDuration />
+
+    if (hazardInfo === 'Telephone Line Outage')
+      return <OutageEstimatedDuration />
+
+    if (hazardInfo === 'Nuclear Power Station Accident')
+      return <NuclearEventScale />
+
     return <></>
   }, [hazardInfo])
 
@@ -209,10 +242,12 @@ export function HazardInfo() {
         <option>Contaminated Drinking Water</option>
         <option>UV Radiation</option>
         <option>Risk of Infection</option>
-        <option>Noise Pollution</option>
-        <option>Air Pollution</option>
-        <option>Marine Pollution</option>
-        <option>River Pollution</option>
+        {/*
+          <option>Noise Pollution</option>
+          <option>Air Pollution</option>
+          <option>Marine Pollution</option>
+          <option>River Pollution</option>
+         */ }
         <option>Pandemia</option>
         <option>Gas Supply Outage</option>
         <option>Outage of IT Systems</option>
@@ -220,11 +255,13 @@ export function HazardInfo() {
         <option>Emergency Number Outage</option>
         <option>Telephone Line Outage</option>
         <option>Nuclear Power Station Accident</option>
-        <option>Chemical Hazard</option>
-        <option>Biological Hazard</option>
-        <option>Radiological Hazard</option>
-        <option>Nuclear Hazard</option>
-        <option>Explosive Hazard</option>
+        { /*
+          <option>Chemical Hazard</option>
+          <option>Biological Hazard</option>
+          <option>Radiological Hazard</option>
+          <option>Nuclear Hazard</option>
+          <option>Explosive Hazard</option>
+         */ }
       </select>
       { hazardInfo !== '' && <h2 className="font-bold col-span-2">Detailed Information</h2>}
       { hazardInfoOptions }

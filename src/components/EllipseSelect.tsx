@@ -458,7 +458,7 @@ export function EllipseSelect() {
                 center={countryCapitalCoords['Afghanistan']}
                 zoom={13}
                 scrollWheelZoom={false}
-                className={`w-full h-96 sticky top-0`}
+                className={`w-full h-96 lg:sticky top-0`}
                 maxBounds={[[90, 180], [-90, -180]]}
                 ref={mapRef}
             >
@@ -523,7 +523,7 @@ export function EllipseSelect() {
                 }
                 </>}
             </MapContainer>
-            <div className="grid grid-cols-[max-content_1fr] items-center gap-1">
+            <div className="grid grid-cols-2 lg:grid-cols-[max-content_1fr] items-center gap-1">
                 <label>Center Latitude: </label>
                 <input 
                     type='number'

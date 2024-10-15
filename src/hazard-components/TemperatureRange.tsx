@@ -25,8 +25,8 @@ export function TemperatureRange() {
   
   return (
     <>
-      <label>Temperature Range</label>
-      <select {...form.register('temperatureRange', {
+      <label className="col-span-2 md:col-span-1">Temperature Range</label>
+      <select className="col-span-2 md:col-span-1" {...form.register('temperatureRange', {
         valueAsNumber: true
       })}>
         {temperatures.map((temperature, i) => (

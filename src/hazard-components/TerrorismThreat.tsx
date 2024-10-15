@@ -24,8 +24,8 @@ export function TerrorismThreatLevel() {
 
   return (
     <>
-      <label>Terrorism Threat Level</label>
-      <select {...form.register('terrorismThreatLevel', {
+      <label className="col-span-2 md:col-span-1">Terrorism Threat Level</label>
+      <select className="col-span-2 md:col-span-1" {...form.register('terrorismThreatLevel', {
         valueAsNumber: true
       })}>
         { terrorismThreatLevels.map((terrorismThreatLevel, i) => (

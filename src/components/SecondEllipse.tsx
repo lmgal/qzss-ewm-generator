@@ -1,6 +1,6 @@
 import { useFormContext } from "react-hook-form"
 import { IFormInput } from "../interface"
-import ReactModal from "react-modal"
+import Modal from "react-responsive-modal"
 import { useState } from "react"
 
 const guidanceChoices = [
@@ -211,9 +211,9 @@ export function SecondEllipse() {
                     Show details
                 </button>
             </div>
-            <ReactModal
-                isOpen={isModalOpen}
-                onRequestClose={() => {
+            <Modal
+                open={isModalOpen}
+                onClose={() => {
                     setIsModalOpen(false)
                     form.setValue('modalOpen', false)
                 }}
@@ -222,15 +222,6 @@ export function SecondEllipse() {
                     <h2 className="text-xl font-bold">
                         Guidance valid for Second Ellipse
                     </h2>
-                    <button
-                        onClick={() => {
-                            setIsModalOpen(false)
-                            form.setValue('modalOpen', false)
-                        }}
-                        className="py-2 px-4 rounded border border-gray-500"
-                    >
-                        Close
-                    </button>
                 </div>
                 <ul>
                     { guidanceChoices.map(({ code, guidance }, idx) => (
@@ -239,7 +230,7 @@ export function SecondEllipse() {
                         </li>
                     ))}
                 </ul>
-            </ReactModal>
+            </Modal>
         </div>
     )
 }

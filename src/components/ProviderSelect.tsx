@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useFormContext, useFieldArray } from "react-hook-form"
 import { IFormInput } from "../interface"
-import Modal from 'react-modal'
+import Modal from "react-responsive-modal"
 
 const defaultProviders : { [key: string] : Array<{
     name: string
@@ -64,7 +64,7 @@ export function ProviderSelect() {
     }, [watchCountry])
 
     return (
-        <div className="flex gap-1">
+        <div className="grid gap-2 lg:flex lg:gap-1">
             <select {...form.register("providerId", {
                 valueAsNumber: true
             })} className="w-full">
@@ -91,28 +91,20 @@ export function ProviderSelect() {
                 Edit
             </button>
             <Modal 
-                isOpen={isModalOpen}
-                onRequestClose={() => {
+                open={isModalOpen}
+                onClose={() => {
                     setIsModalOpen(false)
                     form.setValue('modalOpen', false)
                 }}
-                style={{
-                    content: {
-                        width: '50%',
-                        margin: 'auto',
-                    }
-                }}
+            //    styles={{
+            //        content: {
+            //            width: '50%',
+            //            margin: 'auto',
+            //        }
+            //    }}
             >
                 <div className="grid gap-3">
-                    <div className='flex justify-between'>
-                        <h2 className='text-xl font-bold'>Providers</h2>
-                        <button onClick={() => {
-                            setIsModalOpen(false)
-                            form.setValue('modalOpen', false)
-                        }}>
-                            Close
-                        </button>
-                    </div>
+                    <h2 className='text-xl font-bold'>Providers</h2>
                     {providers.map((provider, i) => (
                         <div key={provider.id} className="w-full flex gap-1">
                             <input

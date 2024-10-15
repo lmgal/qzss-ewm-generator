@@ -17,8 +17,8 @@ export function SeismicCoefficient() {
 
   return (
     <>
-      <label>Seismic Coefficient</label>
-      <select {...form.register('seismicCoefficient', {
+      <label className="col-span-2 md:col-span-1">Seismic Coefficient</label>
+      <select className="col-span-2 md:col-span-1" {...form.register('seismicCoefficient', {
         valueAsNumber: true
       })}>
         { coefficients.map((coefficient, i) => (

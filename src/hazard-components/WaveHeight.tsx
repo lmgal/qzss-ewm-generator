@@ -17,8 +17,8 @@ export function WaveHeight() {
 
   return (
     <>
-      <label>Wave Height (m)</label>
-      <select {...form.register('waveHeight', {
+      <label className="col-span-2 md:col-span-1">Wave Height (m)</label>
+      <select className="col-span-2 md:col-span-1" {...form.register('waveHeight', {
         valueAsNumber: true
       })}>
         {heights.map((height, i) => (

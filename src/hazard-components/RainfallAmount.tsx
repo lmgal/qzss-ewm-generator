@@ -18,8 +18,8 @@ export function RainfallAmount() {
 
   return (
     <>
-      <label>Rainfall Amount (mm/hour)</label>
-      <select {...form.register('rainfallAmount', {
+      <label className="col-span-2 md:col-span-1">Rainfall Amount (mm/hour)</label>
+      <select className="col-span-2 md:col-span-1" {...form.register('rainfallAmount', {
         valueAsNumber: true
       })}>
         { rainfalls.map((rainfall, i) => (

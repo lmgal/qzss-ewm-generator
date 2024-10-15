@@ -38,8 +38,8 @@ export function AvalanceRiskLevel() {
 
   return (
     <>
-      <label>Avalance Risk Level</label>
-      <select {...form.register('avalanceWarningLevel', {
+      <label className="col-span-2 md:col-span-1">Avalance Risk Level</label>
+      <select className="col-span-2 md:col-span-1" {...form.register('avalanceWarningLevel', {
         valueAsNumber: true
       })}>
         { avalanceWarningLevels.map((droughtLevel, i) => (
@@ -51,7 +51,5 @@ export function AvalanceRiskLevel() {
       { avalanceRiskLevelIdx !== undefined && avalanceWarningLevelDescriptions[avalanceRiskLevelIdx].map((description, i) => (
         <span key={i} className="text-xs font-semibold col-span-2">{ description }</span>
       )) } 
-      <span className="text-xs col-span-2">REFERENCE - EU Avalanche Danger Scale from EAWS (European Avalanche Warning Service) - https://www.avalanches.org/standards/avalanche-danger-scale/</span>
-    </>
-  )
+      <span className="text-xs col-span-2">REFERENCE - EU Avalanche Danger Scale from EAWS (European Avalanche Warning Service) - https://www.avalanches.org/standards/avalanche-danger-scale/</span> </>)
 }

@@ -15,8 +15,8 @@ export function AshfallAmount() {
 
   return (
     <>
-      <label>Ash Fall Amount</label>
-      <select {...form.register('ashFallAmount', {
+      <label className="col-span-2 md:col-span-1">Ash Fall Amount</label>
+      <select className="col-span-2 md:col-span-1" {...form.register('ashFallAmount', {
         valueAsNumber: true
       })}>
         { ashfallAmounts.map((ashfallAmount, i) => (

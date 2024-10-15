@@ -26,8 +26,8 @@ export function Visibility() {
 
   return (
     <>
-      <label>Visibility</label>
-      <select {...form.register('visibility', {
+      <label className="col-span-2 md:col-span-1">Visibility</label>
+      <select className="col-span-2 md:col-span-1" {...form.register('visibility', {
         valueAsNumber: true
       })}>
         { visibilities.map((visibility, i) => (
